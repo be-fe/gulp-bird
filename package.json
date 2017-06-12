@@ -1,0 +1,40 @@
+{
+  "author": {
+    "email": "ccxsungodzzx@gmail.com",
+    "name": "ccx"
+  },
+  "dependencies": {
+    "dummy-json": "~0.0.2"
+  },
+  "description": "bird-v2",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "49b80ad30becb1caed25d1265f06432a2e39cc58",
+    "tarball": "https://registry.npmjs.org/gulp-bird/-/gulp-bird-0.0.3.tgz"
+  },
+  "gitHead": "0da8e855db300b405fac6b61c575109b395f812f",
+  "homepage": "https://github.com/befe/gulp-bird",
+  "keywords": [
+    "bird",
+    "gulp"
+  ],
+  "maintainers": [
+    {
+      "email": "ccxsungodzzx@gmail.com",
+      "name": "ccxsungodzzx"
+    },
+    {
+      "email": "nitewoo@gmail.com",
+      "name": "nitewoo"
+    },
+    {
+      "email": "xieyu33333@gmail.com",
+      "name": "xieyu33333"
+    }
+  ],
+  "name": "gulp-bird",
+  "optionalDependencies": {},
+  "scripts": {},
+  "version": "0.0.4"
+}

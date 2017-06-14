@@ -9,12 +9,7 @@
   "description": "bird-v2",
   "devDependencies": {},
   "directories": {},
-  "dist": {
-    "shasum": "49b80ad30becb1caed25d1265f06432a2e39cc58",
-    "tarball": "https://registry.npmjs.org/gulp-bird/-/gulp-bird-0.0.3.tgz"
-  },
-  "gitHead": "0da8e855db300b405fac6b61c575109b395f812f",
-  "homepage": "https://github.com/befe/gulp-bird",
+  "homepage": "https://github.com/be-fe/gulp-bird",
   "keywords": [
     "bird",
     "gulp"
@@ -36,5 +31,5 @@
   "name": "gulp-bird",
   "optionalDependencies": {},
   "scripts": {},
-  "version": "0.0.4"
+  "version": "0.0.5"
 }

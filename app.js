@@ -1,10 +1,10 @@
 var fileServer = require("./index");
 var serverSettings = {
   "8787": {
-    "basePath": "E:/baidu-svn/gcrm/src/main/webapp/front"
+    "basePath": "./demo"
   },
   "7676": {
-    "basePath": "E:/baidu-svn/gcrm/src/main/webapp/front"
+    "basePath": "./demo"
   }
 };
 var transRules = {
@@ -37,7 +37,7 @@ var transRules = {
 var toolsConf = {
     weinre: {
         open: true,
-        port: 9001
+        port: 9000
     }
 };
 

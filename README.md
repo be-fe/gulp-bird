@@ -102,3 +102,12 @@ targetServer
 ```sh
     node config.js
 ```
+
+### 如何开发和贡献代码
+
+```sh
+npm install
+node app.js
+```
+
+然后访问`localhost:7676`查看效果

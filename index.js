@@ -128,6 +128,16 @@ module.exports = {
                                         res.setHeader("Expires", expires.toUTCString());
                                         res.setHeader("Cache-Control", "max-age=" + config.Expires.maxAge);
                                     }
+                                    /*
+                                     * weinre设置
+                                     */
+                                    if (toolsConf && toolsConf.weinre) {
+                                      var injectStatus = injectWeinre(realPath, ext, res, toolsConf.weinre);
+                                      if (injectStatus) {
+                                        return;
+                                      }
+                                    }
+
                                     if (req.headers[ifModifiedSince] && lastModified === req.headers[ifModifiedSince]) {
                                         //console.log(req.url + " 304");
                                         res.writeHead(304, "Not Modified");
@@ -174,11 +184,6 @@ module.exports = {
                                             compressHandle(raw, 200, "Ok");
                                         }
                                     }
-
-                                    /*
-                                     * weinre设置
-                                     */
-                                    toolsConf && toolsConf.weinre && injectWeinre(realPath, ext, toolsConf.weinre)
                                 }
                             }
                         }

@@ -7,8 +7,8 @@ var zlib = require("zlib");
 var config = require("./config");
 var utils = require("./utils");
 var dummyjson = require('dummy-json');
-var injectWeinre = require('./weinre/injectWeinre.js');
-var starWeinre = require('./weinre/startWeinre.js');
+var injectWeinre = require('./tools/injectWeinre.js');
+var starWeinre = require('./tools/startWeinre.js');
 
 var dummyHelpers = {
     dateUTC: function (min, max, options) {
@@ -35,7 +35,7 @@ var Transpond = require("./transpond");
 var transpond = new Transpond().transpond;
 
 module.exports = {
-    start: function (params, rules, weinreConf) {
+    start: function (params, rules, toolsConf) {
         var servers = params || {};
         var serverList = [];
         for (var i in servers) {
@@ -178,7 +178,7 @@ module.exports = {
                                     /*
                                      * weinre设置
                                      */
-                                    injectWeinre(realPath, ext, weinreConf)
+                                    toolsConf && toolsConf.weinre && injectWeinre(realPath, ext, toolsConf.weinre)
                                 }
                             }
                         }
@@ -196,7 +196,7 @@ module.exports = {
         /*
          * 启动weinre服务
          */
-        starWeinre(weinreConf);
+        toolsConf && toolsConf.weinre && starWeinre(toolsConf.weinre);
     }
 };
 

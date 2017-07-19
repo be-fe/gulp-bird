@@ -34,9 +34,11 @@ var transRules = {
     "ajaxOnly": false
 };
 
-var weinreConf = {
-    open: true,
-    port: 9001
+var toolsConf = {
+    weinre: {
+        open: true,
+        port: 9001
+    }
 };
 
-fileServer.start(serverSettings, transRules, weinreConf);
+fileServer.start(serverSettings, transRules, toolsConf);

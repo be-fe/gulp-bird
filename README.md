@@ -86,12 +86,14 @@ targetServer
         "ajaxOnly": false
     };
 
-    var weinre = {
-        open: true,
-        port: 8080
-    }
+    var toolsConf = {
+        weinre: {
+            open: true,
+            port: 9001
+        }
+    };
 
-    bird.start(server, transpondRules, weinre);
+    bird.start(server, transpondRules, toolsConf);
 
 ```
 

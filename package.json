@@ -4,7 +4,8 @@
     "name": "ccx"
   },
   "dependencies": {
-    "dummy-json": "~0.0.2"
+    "dummy-json": "~0.0.2",
+    "weinre": "^2.0.0-pre-I0Z7U9OV"
   },
   "description": "bird-v2",
   "devDependencies": {},
@@ -31,5 +32,5 @@
   "name": "gulp-bird",
   "optionalDependencies": {},
   "scripts": {},
-  "version": "0.0.5"
+  "version": "0.0.6"
 }

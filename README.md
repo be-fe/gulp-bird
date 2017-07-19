@@ -86,7 +86,12 @@ targetServer
         "ajaxOnly": false
     };
 
-    bird.start(server, transpondRules);
+    var weinre = {
+        open: true,
+        port: 8080
+    }
+
+    bird.start(server, transpondRules, weinre);
 
 ```
 

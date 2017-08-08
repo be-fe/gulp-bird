@@ -38,6 +38,10 @@ var toolsConf = {
     weinre: {
         open: true,
         port: 9000
+    },
+
+    qrcode: {
+        open: true
     }
 };
 

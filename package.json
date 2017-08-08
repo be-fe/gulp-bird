@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "dummy-json": "~0.0.2",
+    "qrcode": "^0.9.0",
     "weinre": "^2.0.0-pre-I0Z7U9OV"
   },
   "description": "bird-v2",

@@ -10,24 +10,27 @@ var dummyjson = require('dummy-json');
 var injectWeinre = require('./tools/injectWeinre.js');
 var starWeinre = require('./tools/startWeinre.js');
 
+var createQRcode = require('./tools/createQRcode.js');
+
+
 var dummyHelpers = {
     dateUTC: function (min, max, options) {
         var time = dummyHelpers.timeUTC(min, max, options);
-        return time - time%(24*60*60*1000);
+        return time - time % (24 * 60 * 60 * 1000);
     },
     timeUTC: function (min, max, options) {
         var minTime = NewDate(min).getTime(),
-                maxTime = NewDate(max).getTime();
+            maxTime = NewDate(max).getTime();
         return randomInt(minTime, maxTime);
     },
-    animals: function(options) {
+    animals: function (options) {
         var animals = ['cat', 'dog', 'cow', 'wolf', 'giraffe'],
-                rIndex = randomInt(0, animals.length);
+            rIndex = randomInt(0, animals.length);
         return animals[rIndex];
     },
     genders: function (options) {
         var genders = ['male', 'female'],
-                rIndex = randomInt(0, genders.length);
+            rIndex = randomInt(0, genders.length);
         return genders[rIndex];
     }
 };
@@ -77,7 +80,7 @@ module.exports = {
                                 pathHandle(realPath);
                             }
                             else {
-                                if ( realPath.indexOf('.json')>-1 && !realPath.match('locale') ) {
+                                if (realPath.indexOf('.json') > -1 && !realPath.match('locale')) {
                                     // fs.stat( realPath, function (err, stats) {
                                     var content = fs.readFileSync(realPath, "utf-8");
                                     // res.write(JSON.stringify( {
@@ -86,7 +89,7 @@ module.exports = {
                                     var o = JSON.parse(content);
                                     var resultJSON = generate(o);
                                     res.setHeader("Content-Type", 'application/json;charset=UTF-8');
-                                    res.write( JSON.stringify( resultJSON ) );
+                                    res.write(JSON.stringify(resultJSON));
                                     // res.write(JSON.stringify({
                                     //     code: 200,
                                     //     message: 'ok',
@@ -94,12 +97,12 @@ module.exports = {
                                     // }));
                                     res.end();
                                     // });
-                                //利用dummy-json将djson生成为random的json测试数据
+                                    //利用dummy-json将djson生成为random的json测试数据
                                 }
-                                else if (realPath.indexOf('.djson')>-1 && !realPath.match('locale')) {
+                                else if (realPath.indexOf('.djson') > -1 && !realPath.match('locale')) {
                                     var content = fs.readFileSync(realPath, "utf-8");
-                                    var resultDummy = dummyjson.parse(content, {helpers:dummyHelpers});
-                                    res.write( resultDummy );
+                                    var resultDummy = dummyjson.parse(content, { helpers: dummyHelpers });
+                                    res.write(resultDummy);
                                     res.end();
                                 }
                                 else {
@@ -128,15 +131,28 @@ module.exports = {
                                         res.setHeader("Expires", expires.toUTCString());
                                         res.setHeader("Cache-Control", "max-age=" + config.Expires.maxAge);
                                     }
+
+
+                                    /*
+                                     * qrcode 配置
+                                     */
+                                    if (toolsConf && toolsConf.qrcode) {
+                                        console.log('\n -------qrcode------ \n')
+                                        createQRcode(realPath, ext, res, toolsConf.qrcode);
+                                    }
+
                                     /*
                                      * weinre设置
                                      */
                                     if (toolsConf && toolsConf.weinre) {
-                                      var injectStatus = injectWeinre(realPath, ext, res, toolsConf.weinre);
-                                      if (injectStatus) {
-                                        return;
-                                      }
+                                        var injectStatus = injectWeinre(realPath, ext, res, toolsConf.weinre);
+                                        if (injectStatus) {
+                                            return;
+                                        }
                                     }
+
+                                    
+
 
                                     if (req.headers[ifModifiedSince] && lastModified === req.headers[ifModifiedSince]) {
                                         //console.log(req.url + " 304");
@@ -202,11 +218,13 @@ module.exports = {
          * 启动weinre服务
          */
         toolsConf && toolsConf.weinre && starWeinre(toolsConf.weinre);
+        // toolsConf && toolsConf.qrcode && createQRcode(realPath, ext, res, toolsConf.qrcode);
+        
     }
 };
 
 function generate(jsonPattern) {
-    try{
+    try {
         var matches = jsonPattern[0].match(/{{repeat\((\d),(\d)\)}}/);
         var repeatCount = randomBetween(matches[1], matches[2]);
         var obj = {
@@ -225,7 +243,7 @@ function generate(jsonPattern) {
             obj.data.push(item);
         };
         return obj;
-    } catch ( e ){
+    } catch (e) {
         return jsonPattern;
         // return undefined;
     }
@@ -238,8 +256,8 @@ function randomBetween(a, b) {
 
 function generatePattern(pattern) {
     // var functionString = pattern.match(/{{([\w|(|)]*)}}/)[1];
-    if ( pattern.match( 'function' ) ) {
-        return eval( pattern );
+    if (pattern.match('function')) {
+        return eval(pattern);
     } else {
         try {
             var functionString = pattern.replace(/\{\{/, '').replace(/}}/, '');
@@ -274,7 +292,7 @@ function NewDate(timeString) {
     var dates = timeString.split(' '),
         ymd = dates[0].split('-'),
         date = new Date();
-        date.setUTCFullYear(ymd[0], ymd[1] - 1, ymd[2]);
+    date.setUTCFullYear(ymd[0], ymd[1] - 1, ymd[2]);
     if (dates[1]) {
         time = dates[1] && dates[1].split(':');
         date.setUTCHours(Number(time[0]), Number(time[1]), Number(time[2]), 0);

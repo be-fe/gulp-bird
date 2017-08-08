@@ -10,6 +10,7 @@ var dummyjson = require('dummy-json');
 var injectWeinre = require('./tools/injectWeinre.js');
 var starWeinre = require('./tools/startWeinre.js');
 
+
 var dummyHelpers = {
     dateUTC: function (min, max, options) {
         var time = dummyHelpers.timeUTC(min, max, options);
@@ -47,6 +48,7 @@ module.exports = {
                     pathname += config.Default.file;
                 }
                 realPath = path.join(servers[port].basePath, path.normalize(pathname.replace(/\.\./g, "")));
+
                 //匹配忽略列表，若匹配直接抛给回调函数
                 if (servers[port].ignoreRegExp && req.url.match(servers[port].ignoreRegExp)) {
                     console.log("ignore request:" + req.url);
@@ -70,11 +72,45 @@ module.exports = {
                                 res.write("This request URL " + pathname + " was not found on this server.");
                                 res.end();
                             }
+
                         }
                         else {
                             if (stats.isDirectory()) {
-                                realPath = path.join(realPath, "/", config.Welcome.file);
-                                pathHandle(realPath);
+
+                                var folderList = [];
+                                var fileList = [];
+                                // 遍历目录下的文件
+                                var walk = function (path){
+                                    var dirList = fs.readdirSync(path);
+
+                                    dirList.forEach(function(item){
+                                        if (!item.match(/^\./)) {  //过滤隐藏文件
+                                            if(fs.statSync(path + '/' + item).isDirectory()){
+                                                    // walk(path + '/' + item, path);
+                                                    folderList.push({ id: path + '/' + item, path: path + '/' + item, fileName: item, pid: path });
+                                            } else {
+                                                fileList.push({ id: path + '/' + item, path: path + '/' + item, fileName: item, pid: path });
+                                            }
+                                        }
+                                    });
+                                }
+                                walk(realPath);
+
+                                folderList.forEach(function(item, index){
+                                    res.writeHead(200, {'content-type':'text/html'});
+
+                                    res.write('<div>\
+                                    <i style="display:inline-block;width:20px;height:20px; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABsklEQVRYR+2XTU7DMBCFZxJVYkdQ0zXlCL0A4BuUE1CkZk17A7hB2SEliHADOEHaG/QGlHVTKV0H8pCrJoop9CdKnA1exdLY8+X5eWwz1dy45vxUP0CrH/jEfL2nEtM4hoh8Ee0ZvzOMW84YO6NyAQnhYeGKwSFjtsUeDCAnSxJcLZ7EaxkQhQAAioiNbhGA0D2f5McVAiiSOBsDvMw90Uv72gFAmISuuPwH2KoACEsQ+SzNVnID02zhCn87AHAfeuKu6QQ9hnFaMoMy3a8mjGOc0BFZjS9+rzI5gI8NAABvoSe6TScYGcS3FQMMNwDSKmc7QcTEx1UCxCbOFAApSeiJtlx7g/i5yuRpPVAA0oPGdoIxE19UCZAQbuRuUACkJDJp1eaTOaTR5bGeAaSS6DAf5c6DDCCVRIf58sf5CkBWvs+Y2maDuhrMtwxdYamVcC2JJvMpN6r1EqATmxTpMB8ROnNXTDMF7H4wW+99HZVvVWeUG5HdDwahJ0Y6zAdgKHMpAFYvsHSYb7X3TZxFj2KmAMiODvP9vIplHpAfh74NipTov67y9T/NivxNmWNqV+AbNyQS/e7JVkoAAAAASUVORK5CYII=)"></i>\
+                                    <a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration: none;font-size: 24px; color: #1565C0; padding-left: 10px;">' + item.fileName +'</a>\
+                                    </div>');
+                                });
+                                fileList.forEach(function(item, index){
+                                    res.write('<div><i style="display:inline-block;width:20px;height:20px;"></i><a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration: none;font-size: 24px; color: #1565C0; padding-left: 15px;">' + item.fileName + '</a></div>');
+                                });
+                                // res.write(JSON.stringify(fileList))
+                                res.end();
+                                // realPath = path.join(realPath, "/", config.Welcome.file);
+                                // pathHandle(realPath);
                             }
                             else {
                                 if ( realPath.indexOf('.json')>-1 && !realPath.match('locale') ) {

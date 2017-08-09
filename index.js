@@ -104,9 +104,9 @@ module.exports = {
                                     <a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration:none; font-size:20px; color:#333; padding-left:7px; vertical-align:middle;">' + item.fileName +'</a>\
                                     </div>');
                                 });
-                                
+
                                 fileList.forEach(function(item, index){
-                                    res.write('<div><i style="display:inline-block;width:20px;height:20px;"></i><a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration: none;font-size: 24px; color: #1565C0; padding-left: 15px;">' + item.fileName + '</a></div>');
+                                    res.write('<div><i style="display:inline-block;width:20px;height:20px;"></i><a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration: none;font-size: 20px; color: #333; padding-left: 10px;">' + item.fileName + '</a></div>');
                                 });
                                 // res.write(JSON.stringify(fileList))
                                 res.end();

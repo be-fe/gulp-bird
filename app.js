@@ -40,7 +40,8 @@ var toolsConf = {
         port: 9000
     },
 
-    qrcode: true
+    qrcode: true,
+    reload: true
 };
 
 fileServer.start(serverSettings, transRules, toolsConf);

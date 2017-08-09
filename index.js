@@ -131,6 +131,15 @@ module.exports = {
                                         res.setHeader("Cache-Control", "max-age=" + config.Expires.maxAge);
                                     }
 
+                                    if (toolsConf && toolsConf.reload) {
+                                        console.log('reload')
+                                        var content = fs.readFileSync(realPath, "utf-8");
+                                        var testBtn = '<button onclick="window.location.reload(true)">刷新</button>'
+                                        content = content.replace('</html>', testBtn + '</html>');
+                                        res.write(content);
+                                        res.end();
+                                        return true;
+                                    }
 
                                     /*
                                      * qrcode 配置
@@ -152,6 +161,8 @@ module.exports = {
                                             return;
                                         }
                                     }
+
+                                    
 
 
 

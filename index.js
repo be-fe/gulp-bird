@@ -97,13 +97,14 @@ module.exports = {
                                 walk(realPath);
 
                                 folderList.forEach(function(item, index){
-                                    res.writeHead(200, {'content-type':'text/html'});
+                                    // res.writeHead(200, {'content-type':'text/html'});
 
                                     res.write('<div>\
-                                    <i style="display:inline-block;width:20px;height:20px; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABsklEQVRYR+2XTU7DMBCFZxJVYkdQ0zXlCL0A4BuUE1CkZk17A7hB2SEliHADOEHaG/QGlHVTKV0H8pCrJoop9CdKnA1exdLY8+X5eWwz1dy45vxUP0CrH/jEfL2nEtM4hoh8Ee0ZvzOMW84YO6NyAQnhYeGKwSFjtsUeDCAnSxJcLZ7EaxkQhQAAioiNbhGA0D2f5McVAiiSOBsDvMw90Uv72gFAmISuuPwH2KoACEsQ+SzNVnID02zhCn87AHAfeuKu6QQ9hnFaMoMy3a8mjGOc0BFZjS9+rzI5gI8NAABvoSe6TScYGcS3FQMMNwDSKmc7QcTEx1UCxCbOFAApSeiJtlx7g/i5yuRpPVAA0oPGdoIxE19UCZAQbuRuUACkJDJp1eaTOaTR5bGeAaSS6DAf5c6DDCCVRIf58sf5CkBWvs+Y2maDuhrMtwxdYamVcC2JJvMpN6r1EqATmxTpMB8ROnNXTDMF7H4wW+99HZVvVWeUG5HdDwahJ0Y6zAdgKHMpAFYvsHSYb7X3TZxFj2KmAMiODvP9vIplHpAfh74NipTov67y9T/NivxNmWNqV+AbNyQS/e7JVkoAAAAASUVORK5CYII=)"></i>\
-                                    <a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration: none;font-size: 24px; color: #1565C0; padding-left: 10px;">' + item.fileName +'</a>\
+                                    <i style="display:inline-block; width:18px; height:18px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwElEQVRYR+1XwQ0CIRDcuUrsQLIUoK1YgZZgCdqBJZwdeAVArgQbgTUkXmLiAzgxfJYvs7PDwCQsqPNC5/4EY8xmGIYjAJMRMzrnrq0Fg5lnANsSYhG5ee8PJdhSDKy1Ugp+40YRmStrvuAxxsQxrRHwa+/P+ntvAaQCUgz3LS+1livF8FIaw1ryHD6lSd+AOqAOqAPqgDqgDqgD/R1g5geAXe738o99EZmW0exERLnRrKkGAM8Qwrn/cNr0WCvIXn1pSuViiY9hAAAAAElFTkSuQmCC); background-size:cover; vertical-align:middle;"></i>\
+                                    <a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration:none; font-size:20px; color:#333; padding-left:7px; vertical-align:middle;">' + item.fileName +'</a>\
                                     </div>');
                                 });
+                                
                                 fileList.forEach(function(item, index){
                                     res.write('<div><i style="display:inline-block;width:20px;height:20px;"></i><a href="' + realPath.slice(realPath.lastIndexOf('/') + 1) + '/' + item.fileName + '" style="text-decoration: none;font-size: 24px; color: #1565C0; padding-left: 15px;">' + item.fileName + '</a></div>');
                                 });

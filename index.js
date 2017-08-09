@@ -9,6 +9,8 @@ var utils = require("./utils");
 var dummyjson = require('dummy-json');
 var injectWeinre = require('./tools/injectWeinre.js');
 var starWeinre = require('./tools/startWeinre.js');
+var matchDirectory = require('./tools/matchDirectory.js'); // 增加匹配目录的功能
+
 
 var createQRcode = require('./tools/createQRcode.js');
 
@@ -49,6 +51,7 @@ module.exports = {
                     pathname += config.Default.file;
                 }
                 realPath = path.join(servers[port].basePath, path.normalize(pathname.replace(/\.\./g, "")));
+
                 //匹配忽略列表，若匹配直接抛给回调函数
                 if (servers[port].ignoreRegExp && req.url.match(servers[port].ignoreRegExp)) {
                     console.log("ignore request:" + req.url);
@@ -72,11 +75,11 @@ module.exports = {
                                 res.write("This request URL " + pathname + " was not found on this server.");
                                 res.end();
                             }
+
                         }
                         else {
                             if (stats.isDirectory()) {
-                                realPath = path.join(realPath, "/", config.Welcome.file);
-                                pathHandle(realPath);
+                                matchDirectory(req, res, realPath);
                             }
                             else {
                                 if (realPath.indexOf('.json') > -1 && !realPath.match('locale')) {

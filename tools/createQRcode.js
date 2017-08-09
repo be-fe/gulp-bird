@@ -1,4 +1,5 @@
 var fs = require('fs');
+var URL = require('url');
 var getIP = require("./getIP");
 var QRCode = require('qrcode');
 
@@ -6,22 +7,18 @@ var QRCode = require('qrcode');
  * ext: 文件名称
  * conf：配置信息，true和false
  */
-module.exports = function (realPath, ext, res, conf) {
-    if (conf && ext === 'html') {
-        var content = fs.readFileSync(realPath, "utf-8");
-        const ip = getIP;
-        var qrImg = '';
+module.exports = function (realPath, ext, res, conf, dir) {
+    if (!conf || ext !== 'html') {
+        return false;
+    }
+    const ip = "http://" + getIP + ":" + dir;
+    let content = fs.readFileSync(realPath, "utf-8");
 
-        QRCode.toDataURL('I am a pony!', function (err, url) {
-            qrImg = '<img src="' + url + '" alt="gulp-bird-qrcode">';
-            content = content.replace('</html>', qrImg + '</html>');
-        })
-            console.log(content)
-        
-
+    QRCode.toDataURL(ip,  (err, url) => {
+        const qrImg = '<img src="' + url + '">';
+        content = content.replace('</html>', qrImg + '</html>');
         res.write(content);
         res.end();
-
-        return true;
-    }
+    })
+    return true;
 }

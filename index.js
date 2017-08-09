@@ -12,7 +12,6 @@ var starWeinre = require('./tools/startWeinre.js');
 
 var createQRcode = require('./tools/createQRcode.js');
 
-
 var dummyHelpers = {
     dateUTC: function (min, max, options) {
         var time = dummyHelpers.timeUTC(min, max, options);
@@ -137,8 +136,11 @@ module.exports = {
                                      * qrcode 配置
                                      */
                                     if (toolsConf && toolsConf.qrcode) {
-                                        console.log('\n -------qrcode------ \n')
-                                        createQRcode(realPath, ext, res, toolsConf.qrcode);
+                                        const dir = port + req.url; //端口号和目录后缀
+                                        var qrCodeStatus = createQRcode(realPath, ext, res, toolsConf.qrcode, dir);
+                                        if (qrCodeStatus) {
+                                            return;
+                                        }
                                     }
 
                                     /*
@@ -151,7 +153,7 @@ module.exports = {
                                         }
                                     }
 
-                                    
+
 
 
                                     if (req.headers[ifModifiedSince] && lastModified === req.headers[ifModifiedSince]) {
@@ -219,7 +221,7 @@ module.exports = {
          */
         toolsConf && toolsConf.weinre && starWeinre(toolsConf.weinre);
         // toolsConf && toolsConf.qrcode && createQRcode(realPath, ext, res, toolsConf.qrcode);
-        
+
     }
 };
 

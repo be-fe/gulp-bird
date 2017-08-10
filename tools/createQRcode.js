@@ -1,24 +1,19 @@
-var fs = require('fs');
-var URL = require('url');
+const cheerio = require('cheerio');
 var getIP = require("./getIP");
 var QRCode = require('qrcode');
 
 /**
- * ext: 文件名称
- * conf：配置信息，true和false
+ * ext: 生成二维码
  */
-module.exports = function (realPath, ext, res, conf, dir) {
-    if (!conf || ext !== 'html') {
-        return false;
-    }
-    const ip = "http://" + getIP + ":" + dir;
-    let content = fs.readFileSync(realPath, "utf-8");
-
-    QRCode.toDataURL(ip,  (err, url) => {
-        const qrImg = '<img src="' + url + '">';
-        content = content.replace('</html>', qrImg + '</html>');
-        res.write(content);
-        res.end();
-    })
-    return true;
+module.exports = function (content, dir) {
+    return new Promise((resolve, reject) => {
+        const ip = "http://" + getIP + ":" + dir;
+        QRCode.toDataURL(ip, function (err, url) {
+            const qrImg = '<img src="' + url + '">';
+            const $ = cheerio.load('<li class="bird-qrcode">二维码</li>');
+            $('.bird-qrcode').append(qrImg);
+            content += $.html();
+            resolve(content);
+        })
+    });
 }

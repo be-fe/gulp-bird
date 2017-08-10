@@ -12,7 +12,11 @@ var starWeinre = require('./tools/startWeinre.js');
 var matchDirectory = require('./tools/matchDirectory.js'); // 增加匹配目录的功能
 
 
+const cheerio = require('cheerio');
+var toolstart = require('./tools/toolstart.js');
 var createQRcode = require('./tools/createQRcode.js');
+var reload = require('./tools/reload.js');
+
 
 var dummyHelpers = {
     dateUTC: function (min, max, options) {
@@ -134,41 +138,25 @@ module.exports = {
                                         res.setHeader("Cache-Control", "max-age=" + config.Expires.maxAge);
                                     }
 
-                                    if (toolsConf && toolsConf.reload) {
-                                        console.log('reload')
-                                        var content = fs.readFileSync(realPath, "utf-8");
-                                        var testBtn = '<button onclick="window.location.reload(true)">刷新</button>'
-                                        content = content.replace('</html>', testBtn + '</html>');
-                                        res.write(content);
-                                        res.end();
+                                    // 工具栏配置
+                                    if (toolsConf) {
+                                        const $ = cheerio.load(fs.readFileSync(realPath, "utf-8"));
+                                        $('body').append('<div class="bird-tools-wrap"><button>+</button><ul class="bird-tools"></ul></div>');
+                                        toolstart()
+                                            .then(data => { // 二维码
+                                                const dir = port + req.url; //端口号和目录后缀
+                                                return createQRcode(data, dir);
+                                            })
+                                            .then(data => { // 刷新按钮
+                                                return reload(data);
+                                            })
+                                            .then(data => {
+                                                $('.bird-tools').append(data);
+                                                res.write($.html());
+                                                res.end();
+                                            });
                                         return true;
                                     }
-
-                                    /*
-                                     * qrcode 配置
-                                     */
-                                    if (toolsConf && toolsConf.qrcode) {
-                                        const dir = port + req.url; //端口号和目录后缀
-                                        var qrCodeStatus = createQRcode(realPath, ext, res, toolsConf.qrcode, dir);
-                                        if (qrCodeStatus) {
-                                            return;
-                                        }
-                                    }
-
-                                    /*
-                                     * weinre设置
-                                     */
-                                    if (toolsConf && toolsConf.weinre) {
-                                        var injectStatus = injectWeinre(realPath, ext, res, toolsConf.weinre);
-                                        if (injectStatus) {
-                                            return;
-                                        }
-                                    }
-
-                                    
-
-
-
 
                                     if (req.headers[ifModifiedSince] && lastModified === req.headers[ifModifiedSince]) {
                                         //console.log(req.url + " 304");

@@ -141,7 +141,8 @@ module.exports = {
                                     // 工具栏配置
                                     if (toolsConf) {
                                         const $ = cheerio.load(fs.readFileSync(realPath, "utf-8"));
-                                        $('body').append('<div class="bird-tools-wrap"><button>+</button><ul class="bird-tools"></ul></div>');
+
+                                        $('body').append('<div class="bird-tools__wrap"><button class="bird-tools__btn_add">+</button><ul class="bird-tools__menu"></ul></div>');
                                         toolstart()
                                             .then(data => { // 二维码
                                                 const dir = port + req.url; //端口号和目录后缀
@@ -151,7 +152,7 @@ module.exports = {
                                                 return reload(data);
                                             })
                                             .then(data => {
-                                                $('.bird-tools').append(data);
+                                                $('.bird-tools__menu').append(data);
                                                 res.write($.html());
                                                 res.end();
                                             });

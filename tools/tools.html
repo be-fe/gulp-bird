@@ -56,7 +56,7 @@
     color: #fff;
     background: #d4608c;
     text-decoration: none;
-    box-shadow: 1px 1px 3px #888;
+    box-shadow: 1px 1px 3px #888888;
   }
 
   .bird-tools__wrap .icon {
@@ -72,10 +72,9 @@
 </div>
 
 <script>
-  // (function () {
-  let birdToolsShowMenu = false;
-  const addBtn = document.querySelector('.bird-tools__btn_add');
-  const toolMenu = document.querySelector('.bird-tools__menu');
+  var birdToolsShowMenu = false;
+  var addBtn = document.querySelector('.bird-tools__btn_add');
+  var toolMenu = document.querySelector('.bird-tools__menu');
   function toogleMenu() {
     if (birdToolsShowMenu) { // 收起菜单栏
       toolMenu.classList.add('hide');
@@ -86,6 +85,4 @@
     }
     birdToolsShowMenu = !birdToolsShowMenu;
   }
-  // })()
-
 </script>

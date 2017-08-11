@@ -1,0 +1,56 @@
+<style>
+  .bird-tools__wrap {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .bird-tools__btn_add {
+    width: 50px;
+    height: 50px;
+    line-height: 40px;
+    font-size: 40px;
+    border: 0;
+    border-radius: 50%;
+    color: #fff;
+    background: #d4608c;
+    box-shadow: 1px 1px 5px #888;
+  }
+
+  .bird-tools__menu {
+    padding: 0;
+    margin: 0;
+  }
+
+  .bird-tools__item {
+    list-style: none;
+    margin-bottom: 10PX;
+  }
+
+
+  .bird-tools__item>a {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 0;
+    border-radius: 50%;
+    color: #fff;
+    background: #d4608c;
+    text-decoration: none;
+    box-shadow: 1px 1px 5px #888;
+  }
+
+  .bird-tools__item .icon {
+    position: relative;
+    top: 8px;
+  }
+
+
+</style>
+<div class="bird-tools__wrap"><button class="bird-tools__btn_add">+</button>
+  <ul class="bird-tools__menu"></ul>
+</div>

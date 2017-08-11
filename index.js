@@ -14,8 +14,8 @@ var matchDirectory = require('./tools/matchDirectory.js'); // 增加匹配目录
 
 const cheerio = require('cheerio');
 var toolstart = require('./tools/toolstart.js');
-var createQRcode = require('./tools/createQRcode.js');
-var reload = require('./tools/reload.js');
+var createQRcode = require('./tools/createQRcode/createQRcode.js');
+var reload = require('./tools/reload/reload.js');
 
 
 var dummyHelpers = {
@@ -140,9 +140,8 @@ module.exports = {
 
                                     // 工具栏配置
                                     if (toolsConf) {
-                                        const $ = cheerio.load(fs.readFileSync(realPath, "utf-8"));
+                                        const $ = cheerio.load(fs.readFileSync('./tools/tools.html', "utf-8"));
 
-                                        $('body').append('<div class="bird-tools__wrap"><button class="bird-tools__btn_add">+</button><ul class="bird-tools__menu"></ul></div>');
                                         toolstart()
                                             .then(data => { // 二维码
                                                 const dir = port + req.url; //端口号和目录后缀
@@ -153,7 +152,9 @@ module.exports = {
                                             })
                                             .then(data => {
                                                 $('.bird-tools__menu').append(data);
-                                                res.write($.html());
+                                                const body = cheerio.load(fs.readFileSync(realPath, "utf-8"));
+                                                body('body').append($.html());
+                                                res.write(body.html());
                                                 res.end();
                                             });
                                         return true;

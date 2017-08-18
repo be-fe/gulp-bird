@@ -6,8 +6,8 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "dummy-json": "~0.0.2",
-    "qrcode": "^0.9.0",
-    "weinre": "^2.0.0-pre-I0Z7U9OV"
+    "weinre-no-error": "1.0.0",
+    "qrcode": "^0.9.0"
   },
   "description": "bird-v2",
   "devDependencies": {},
@@ -34,5 +34,5 @@
   "name": "gulp-bird",
   "optionalDependencies": {},
   "scripts": {},
-  "version": "0.1.2"
+  "version": "0.1.5"
 }

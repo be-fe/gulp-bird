@@ -1,14 +1,15 @@
 var getIP = require("./getIP");
 var fs = require('fs');
-module.exports = function(realPath, ext, res, conf) {
-    //weinre
-    var weinreConfig = conf;
-    if (weinreConfig && weinreConfig.open && ext === 'html') {
-        var content = fs.readFileSync(realPath, "utf-8");
-        var weinreScript = '<script src="http://'+ getIP +':'+ weinreConfig.port +'/target/target-script-min.js#anonymous"></script>'
-        content = content.replace('</html>', weinreScript + '</html>');
-        res.write(content);
-        res.end();
-        return true;
-    }
+
+module.exports = function (content, weinreConfig) {
+    return new Promise((resolve, reject) => {
+        if (weinreConfig && weinreConfig.open) {
+            var weinreScript = '<script src="http://'+ getIP +':'+ weinreConfig.port +'/target/target-script-min.js#anonymous"></script>'
+            content += weinreScript;
+            resolve(content);
+        }
+        else {
+            resolve(content);
+        }
+    })
 }

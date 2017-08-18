@@ -139,13 +139,16 @@ module.exports = {
                                     }
 
                                     // 工具栏配置
-                                    if (toolsConf && toolsConf.showTools) {
+                                    if (toolsConf && toolsConf.showTools && ext === 'html') {
                                         const $ = cheerio.load(fs.readFileSync(path.join(__dirname ,'/tools/tools.html'), "utf-8"));
 
                                         toolstart()
                                             .then(data => { // 二维码
                                                 const dir = port + req.url; //端口号和目录后缀
                                                 return createQRcode(data, dir);
+                                            })
+                                            .then(data => { // weinre自动注入
+                                                return injectWeinre(data, toolsConf.weinre);
                                             })
                                             .then(data => { // 刷新按钮
                                                 return reload(data);

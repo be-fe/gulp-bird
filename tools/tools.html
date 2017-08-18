@@ -65,7 +65,7 @@
   }
 </style>
 <div class="bird-tools__wrap">
-  <a class="bird-tools__btn_add close" onclick="toogleMenu()">
+  <a class="bird-tools__btn_add" onclick="toogleMenu()">
     <svg t="1502437992902" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2512" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32"><defs><style type="text/css"></style></defs><path d="M512 998.4c25.6 0 51.2-19.2 51.2-51.2v-384h390.4c25.6 0 51.2-19.2 51.2-51.2 0-25.6-19.2-51.2-51.2-51.2H563.2v-384c0-25.6-19.2-51.2-51.2-51.2-25.6 0-51.2 19.2-51.2 51.2v390.4h-384c-25.6-6.4-51.2 19.2-51.2 44.8 0 25.6 19.2 51.2 51.2 51.2h390.4v390.4c-6.4 19.2 19.2 44.8 44.8 44.8" fill="#ffffff" p-id="2513"></path></svg>
   </a>
   <ul class="bird-tools__menu hide"></ul>
@@ -78,10 +78,10 @@
   function toogleMenu() {
     if (birdToolsShowMenu) { // 收起菜单栏
       toolMenu.classList.add('hide');
-      addBtn.classList.add('close');
+      addBtn.classList.remove('close');
     } else { // 展开菜单栏
       toolMenu.classList.remove('hide');
-      addBtn.classList.remove('close');
+      addBtn.classList.add('close');
     }
     birdToolsShowMenu = !birdToolsShowMenu;
   }

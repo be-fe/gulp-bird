@@ -8,7 +8,7 @@ var config = require("./config");
 var utils = require("./utils");
 var dummyjson = require('dummy-json');
 var injectWeinre = require('./tools/injectWeinre.js');
-var starWeinre = require('./tools/startWeinre.js');
+var startWeinre = require('./tools/startWeinre.js');
 var matchDirectory = require('./tools/matchDirectory.js'); // 增加匹配目录的功能
 
 
@@ -139,7 +139,7 @@ module.exports = {
                                     }
 
                                     // 工具栏配置
-                                    if (toolsConf) {
+                                    if (toolsConf && toolsConf.showTools) {
                                         const $ = cheerio.load(fs.readFileSync('./tools/tools.html', "utf-8"));
 
                                         toolstart()
@@ -223,7 +223,7 @@ module.exports = {
         /*
          * 启动weinre服务
          */
-        toolsConf && toolsConf.weinre && starWeinre(toolsConf.weinre);
+        toolsConf && toolsConf.weinre && startWeinre(toolsConf.weinre);
         // toolsConf && toolsConf.qrcode && createQRcode(realPath, ext, res, toolsConf.qrcode);
 
     }

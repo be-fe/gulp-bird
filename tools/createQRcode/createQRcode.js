@@ -1,5 +1,6 @@
 const cheerio = require('cheerio');
 var fs = require("fs");
+var path = require("path");
 var getIP = require("../getIP");
 var QRCode = require('qrcode');
 

@@ -1,5 +1,5 @@
 var getIP = require("./getIP");
-var weinre = require('weinre');
+var weinre = require('weinre-no-error');
 
 module.exports = function (conf) {
     if (conf && conf.open) {

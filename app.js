@@ -38,7 +38,8 @@ var toolsConf = {
     weinre: {
         open: true,
         port: 9000
-    }
+    },
+    showTools: true
 };
 
 fileServer.start(serverSettings, transRules, toolsConf);

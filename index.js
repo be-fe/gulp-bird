@@ -140,7 +140,7 @@ module.exports = {
 
                                     // 工具栏配置
                                     if (toolsConf && toolsConf.showTools) {
-                                        const $ = cheerio.load(fs.readFileSync('./tools/tools.html', "utf-8"));
+                                        const $ = cheerio.load(fs.readFileSync(path.join(__dirname ,'/tools/tools.html'), "utf-8"));
 
                                         toolstart()
                                             .then(data => { // 二维码
@@ -224,7 +224,6 @@ module.exports = {
          * 启动weinre服务
          */
         toolsConf && toolsConf.weinre && startWeinre(toolsConf.weinre);
-        // toolsConf && toolsConf.qrcode && createQRcode(realPath, ext, res, toolsConf.qrcode);
 
     }
 };

@@ -1,6 +1,6 @@
 <li class="bird-tools__item bird-tools_qrcode">
     <a class="bird-tools__btn_qrcode" href="javascript:void(0)" onclick="showQRcode()">
-        <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+        <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="70%" height="70%">
             <defs>
                 <style/>
             </defs>
@@ -36,10 +36,19 @@
         transition: all linear .2s;
     }
 
-
+    .bird-tools_qrcode-content img {
+        min-width: 40vw;
+        max-width: 70vw;
+        max-height: 70vw;
+    }
 </style>
 <script>
     var qrcode = document.querySelector('.bird-tools_qrcode-content');
+    var qrcodeSvg = qrcode.querySelector('svg');
+    // 不同分辨率下二维码自适应宽高，npm 的 qrcode 包生成的 svg 为固定宽度
+    qrcodeSvg.setAttribute('width', '100%');
+    qrcodeSvg.setAttribute('height', '100%');
+    
     function showQRcode() {
         qrcode.classList.add('show');
     }

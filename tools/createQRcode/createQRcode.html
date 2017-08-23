@@ -8,12 +8,11 @@
                 fill="#fff" />
         </svg>
     </a>
+    <div class="bird-tools_qrcode-content" onclick="hideQRcode()"></div>
 </li>
-<div class="bird-tools_qrcode-content" onclick="hideQRcode()"></div>
 
 <style>
     /* 二维码 */
-
     .bird-tools_qrcode-content {
         display: flex;
         align-items: center;
@@ -44,11 +43,6 @@
 </style>
 <script>
     var qrcode = document.querySelector('.bird-tools_qrcode-content');
-    var qrcodeSvg = qrcode.querySelector('svg');
-    // 不同分辨率下二维码自适应宽高，npm 的 qrcode 包生成的 svg 为固定宽度
-    qrcodeSvg.setAttribute('width', '100%');
-    qrcodeSvg.setAttribute('height', '100%');
-    
     function showQRcode() {
         qrcode.classList.add('show');
     }

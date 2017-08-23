@@ -1,5 +1,5 @@
 <li class="bird-tools__item bird-tools_qrcode">
-    <a class="bird-tools__btn_qrcode" href="javascript:void(0)" onclick="showQRcode()">
+    <a class="bird-tools__btn_qrcode" href="javascript:void(0)" onclick="birdToolsShowQRcode()">
         <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="70%" height="70%">
             <defs>
                 <style/>
@@ -8,7 +8,7 @@
                 fill="#fff" />
         </svg>
     </a>
-    <div class="bird-tools_qrcode-content" onclick="hideQRcode()"></div>
+    <div class="bird-tools_qrcode-content" onclick="birdToolsHideQRcode()"></div>
 </li>
 
 <style>
@@ -43,10 +43,10 @@
 </style>
 <script>
     var qrcode = document.querySelector('.bird-tools_qrcode-content');
-    function showQRcode() {
+    function birdToolsShowQRcode() {
         qrcode.classList.add('show');
     }
-    function hideQRcode() {
+    function birdToolsHideQRcode() {
         qrcode.classList.remove('show');
     }
 

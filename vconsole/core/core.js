@@ -40,11 +40,12 @@ class VConsole {
     this.tool = tool;
     this.$ = $;
 
-    let _onload = function() {
+    let _onload = function () {
       that._render();
       that._mockTap();
       that._bindEvent();
       that._autoRun();
+      that._setFontSize();
     };
     if (document !== undefined) {
       if (document.readyState == 'complete') {
@@ -55,14 +56,14 @@ class VConsole {
     } else {
       // if document does not exist, wait for it
       let _timer;
-      let _pollingDocument = function() {
-          if (document && document.readyState == 'complete') {
-            _timer && clearTimeout(_timer);
-            _onload();
-          } else {
-            _timer = setTimeout(_pollingDocument, 1);
-          }
-        };
+      let _pollingDocument = function () {
+        if (document && document.readyState == 'complete') {
+          _timer && clearTimeout(_timer);
+          _onload();
+        } else {
+          _timer = setTimeout(_pollingDocument, 1);
+        }
+      };
       _timer = setTimeout(_pollingDocument, 1);
     }
   }
@@ -73,7 +74,7 @@ class VConsole {
    */
   _render() {
     let id = '#__vconsole';
-    if (! $.one(id)) {
+    if (!$.one(id)) {
       let e = document.createElement('div');
       e.innerHTML = this.html;
       const birds = document.querySelector('.bird-tools__menu');
@@ -84,7 +85,7 @@ class VConsole {
     // reposition switch button
     let $switch = $.one('.vc-switch', this.$dom);
     let switchX = tool.getStorage('switch_x') * 1,
-        switchY = tool.getStorage('switch_y') * 1;
+      switchY = tool.getStorage('switch_y') * 1;
     if (switchX || switchY) {
       // check edge
       if (switchX + $switch.offsetWidth > document.documentElement.offsetWidth) {
@@ -111,15 +112,15 @@ class VConsole {
    */
   _mockTap() {
     let tapTime = 700, // maximun tap interval
-        tapBoundary = 10; // max tap move distance
+      tapBoundary = 10; // max tap move distance
 
     let lastTouchStartTime,
-        touchstartX,
-        touchstartY,
-        touchHasMoved = false,
-        targetElem = null;
+      touchstartX,
+      touchstartY,
+      touchHasMoved = false,
+      targetElem = null;
 
-    this.$dom.addEventListener('touchstart', function(e) { // todo: if double click
+    this.$dom.addEventListener('touchstart', function (e) { // todo: if double click
       if (lastTouchStartTime === undefined) {
         let touch = e.targetTouches[0];
         touchstartX = touch.pageX;
@@ -129,18 +130,18 @@ class VConsole {
       }
     }, false);
 
-    this.$dom.addEventListener('touchmove', function(e) {
+    this.$dom.addEventListener('touchmove', function (e) {
       let touch = e.changedTouches[0];
       if (Math.abs(touch.pageX - touchstartX) > tapBoundary || Math.abs(touch.pageY - touchstartY) > tapBoundary) {
         touchHasMoved = true;
       }
     });
 
-    this.$dom.addEventListener('touchend', function(e) {
+    this.$dom.addEventListener('touchend', function (e) {
       // move and time within limits, manually trigger `click` event
       if (touchHasMoved === false && e.timeStamp - lastTouchStartTime < tapTime && targetElem != null) {
         let tagName = targetElem.tagName.toLowerCase(),
-            needFocus = false;
+          needFocus = false;
         switch (tagName) {
           case 'textarea': // focus
             needFocus = true; break;
@@ -188,11 +189,11 @@ class VConsole {
 
     // drag & drop switch button
     let $switch = $.one('.vc-switch', that.$dom);
-    $.bind($switch, 'touchstart', function(e) {
+    $.bind($switch, 'touchstart', function (e) {
       that.switchPos.startX = e.touches[0].pageX;
       that.switchPos.startY = e.touches[0].pageY;
     });
-    $.bind($switch, 'touchend', function(e) {
+    $.bind($switch, 'touchend', function (e) {
       that.switchPos.x = that.switchPos.endX;
       that.switchPos.y = that.switchPos.endY;
       that.switchPos.startX = 0;
@@ -202,12 +203,12 @@ class VConsole {
       tool.setStorage('switch_x', that.switchPos.x);
       tool.setStorage('switch_y', that.switchPos.y);
     });
-    $.bind($switch, 'touchmove', function(e) {
+    $.bind($switch, 'touchmove', function (e) {
       if (e.touches.length > 0) {
         let offsetX = e.touches[0].pageX - that.switchPos.startX,
-            offsetY = e.touches[0].pageY - that.switchPos.startY;
+          offsetY = e.touches[0].pageY - that.switchPos.startY;
         let x = that.switchPos.x - offsetX,
-            y = that.switchPos.y - offsetY;
+          y = that.switchPos.y - offsetY;
         // check edge
         if (x + $switch.offsetWidth > document.documentElement.offsetWidth) {
           x = document.documentElement.offsetWidth - $switch.offsetWidth;
@@ -226,17 +227,17 @@ class VConsole {
     });
 
     // show console panel
-    $.bind($.one('.vc-switch', that.$dom), 'click', function() {
+    $.bind($.one('.vc-switch', that.$dom), 'click', function () {
       that.show();
     });
 
     // hide console panel
-    $.bind($.one('.vc-hide', that.$dom), 'click', function() {
+    $.bind($.one('.vc-hide', that.$dom), 'click', function () {
       that.hide();
     });
 
     // hide console panel when tap background mask
-    $.bind($.one('.vc-mask', that.$dom), 'click', function(e) {
+    $.bind($.one('.vc-mask', that.$dom), 'click', function (e) {
       if (e.target != $.one('.vc-mask')) {
         return false;
       }
@@ -244,7 +245,7 @@ class VConsole {
     });
 
     // show tab box
-    $.delegate($.one('.vc-tabbar', that.$dom), 'click', '.vc-tab', function(e) {
+    $.delegate($.one('.vc-tabbar', that.$dom), 'click', '.vc-tab', function (e) {
       let tabName = this.dataset.tab;
       if (tabName == that.activedTab) {
         return;
@@ -253,7 +254,7 @@ class VConsole {
     });
 
     // after console panel, trigger a transitionend event to make panel's property 'display' change from 'block' to 'none'
-    $.bind($.one('.vc-panel', that.$dom), 'transitionend webkitTransitionEnd oTransitionEnd otransitionend', function(e) {
+    $.bind($.one('.vc-panel', that.$dom), 'transitionend webkitTransitionEnd oTransitionEnd otransitionend', function (e) {
       if (e.target != $.one('.vc-panel')) {
         return false;
       }
@@ -267,8 +268,8 @@ class VConsole {
     let preventMove = false;
     $.bind($content, 'touchstart', function (e) {
       let top = $content.scrollTop,
-          totalScroll = $content.scrollHeight,
-          currentScroll = top + $content.offsetHeight;
+        totalScroll = $content.scrollHeight,
+        currentScroll = top + $content.offsetHeight;
       if (top === 0) {
         // when content is on the top,
         // reset scrollTop to lower position to prevent iOS apply scroll action to background
@@ -323,6 +324,14 @@ class VConsole {
     }
   }
 
+  _setFontSize() {
+    // 设置文本大小，为 em 适配做准备
+    var docEl = document.documentElement;
+    var rem = docEl.clientWidth / 10;
+    var vconsole = document.getElementById('__vconsole');
+    vconsole.style.fontSize = rem + 'px'
+  }
+
   /**
    * init a plugin
    * @private
@@ -332,14 +341,14 @@ class VConsole {
     // start init
     plugin.trigger('init');
     // render tab (if it is a tab plugin then it should has tab-related events)
-    plugin.trigger('renderTab', function(tabboxHTML) {
+    plugin.trigger('renderTab', function (tabboxHTML) {
       // add to tabList
       that.tabList.push(plugin.id);
       // render tabbar
-      let $tabbar = $.render(tplTabbar, {id: plugin.id, name: plugin.name});
+      let $tabbar = $.render(tplTabbar, { id: plugin.id, name: plugin.name });
       $.one('.vc-tabbar', that.$dom).insertAdjacentElement('beforeend', $tabbar);
       // render tabbox
-      let $tabbox = $.render(tplTabbox, {id: plugin.id});
+      let $tabbox = $.render(tplTabbox, { id: plugin.id });
       if (!!tabboxHTML) {
         if (tool.isString(tabboxHTML)) {
           $tabbox.innerHTML += tabboxHTML;
@@ -352,12 +361,12 @@ class VConsole {
       $.one('.vc-content', that.$dom).insertAdjacentElement('beforeend', $tabbox);
     });
     // render top bar
-    plugin.trigger('addTopBar', function(btnList) {
+    plugin.trigger('addTopBar', function (btnList) {
       if (!btnList) {
         return;
       }
       let $topbar = $.one('.vc-topbar', that.$dom);
-      for (let i=0; i<btnList.length; i++) {
+      for (let i = 0; i < btnList.length; i++) {
         let item = btnList[i];
         let $item = $.render(tplTopBarItem, {
           name: item.name || 'Undefined',
@@ -370,7 +379,7 @@ class VConsole {
           }
         }
         if (tool.isFunction(item.onClick)) {
-          $.bind($item, 'click', function(e) {
+          $.bind($item, 'click', function (e) {
             let enable = item.onClick.call($item);
             if (enable === false) {
               // do nothing
@@ -384,12 +393,12 @@ class VConsole {
       }
     });
     // render tool bar
-    plugin.trigger('addTool', function(toolList) {
+    plugin.trigger('addTool', function (toolList) {
       if (!toolList) {
         return;
       }
       let $defaultBtn = $.one('.vc-tool-last');
-      for (let i=0; i<toolList.length; i++) {
+      for (let i = 0; i < toolList.length; i++) {
         let item = toolList[i];
         let $item = $.render(tplToolItem, {
           name: item.name || 'Undefined',
@@ -399,7 +408,7 @@ class VConsole {
           $.addClass($item, 'vc-global-tool');
         }
         if (tool.isFunction(item.onClick)) {
-          $.bind($item, 'click', function(e) {
+          $.bind($item, 'click', function (e) {
             item.onClick.call($item);
           });
         }
@@ -478,7 +487,7 @@ class VConsole {
       $tabbar && $tabbar.parentNode.removeChild($tabbar);
       // remove topbar
       let $topbar = $.all('.vc-topbar-' + pluginID, this.$dom);
-      for (let i=0; i<$topbar.length; i++) {
+      for (let i = 0; i < $topbar.length; i++) {
         $topbar[i].parentNode.removeChild($topbar[i]);
       }
       // remove content
@@ -486,7 +495,7 @@ class VConsole {
       $content && $content.parentNode.removeChild($content);
       // remove tool bar
       let $toolbar = $.all('.vc-tool-' + pluginID, this.$dom);
-      for (let i=0; i<$toolbar.length; i++) {
+      for (let i = 0; i < $toolbar.length; i++) {
         $toolbar[i].parentNode.removeChild($toolbar[i]);
       }
     }
@@ -521,7 +530,7 @@ class VConsole {
     $panel.style.display = 'block';
 
     // set 10ms delay to fix confict between display and transition
-    setTimeout(function() {
+    setTimeout(function () {
       $.addClass(that.$dom, 'vc-toggle');
       that._triggerPluginsEvent('showConsole');
       let $mask = $.one('.vc-mask', that.$dom);
@@ -538,8 +547,8 @@ class VConsole {
     this._triggerPluginsEvent('hideConsole');
 
     let $mask = $.one('.vc-mask', this.$dom),
-        $panel = $.one('.vc-panel', this.$dom);
-    $.bind($mask, 'transitionend', function(evnet) {
+      $panel = $.one('.vc-panel', this.$dom);
+    $.bind($mask, 'transitionend', function (evnet) {
       $mask.style.display = 'none';
       $panel.style.display = 'none';
     });

@@ -1,41 +1,35 @@
-@mixin px2rem($property, $px-values, $baseline-px:37.5px, $support-for-ie:false) {
-    //Conver the baseline into rems
-    $baseline-rem: $baseline-px / 1rem * 1; //Print the first line in pixel values
-    @if $support-for-ie {
-        #{$property}: $px-values;
-    } //if there is only one (numeric) value, return the property/value line for it.
-    @if type-of($px-values)=="number" {
-        #{$property}: $px-values / $baseline-rem;
+//如果不覆盖，设置一个默认字体大小（以像素为单位） 
+$base-font-size: 75px !default; //将px转换成em 
+@function strip-units($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+//当元素的父元素没有重置字体大小时，相对于16px计算，如果你要将12px转换成em时，可以写成`pxToem(12px)` 
+//当元素的父元素重置了字体大小时，如24px，如果你要将12px转换成em时,可以写成`pxToem(12px,24px)` 
+//另外你还可以不显式的写也单位`px` 
+@function pxToem($target-size, $context:$base-font-size) {
+    @if not unitless($target-size) {
+        //unitless(12)=>true,unitless(12px)=>false 
+        $target-size: strip-units($target-size); //去掉 $target-size单位 } 
     }
-    @else {
-        //Create an empty list that we can dump values into
-        $rem-values: ();
-        @each $value in $px-values {
-            // If the value is zero or not a number, return it
-            @if $value==0 or type-of($value) !="number" {
-                $rem-values: append($rem-values, $value / $baseline-rem);
-            }
-        } // Return the property and its list of converted values
-        #{$property}: $rem-values;
+    @if not unitless($context) {
+        $context: strip-units($context); //去掉 $context单位 
     }
+    @return ($target-size / $context) * 1em;
 }
 
 #__vconsole {
     color: #000;
-    @include px2rem(font-size, 12px);
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     /* global */
     .vc-max-height {
         max-height: 250px;
-        @include px2rem(max-height, 250px);
     }
     .vc-max-height-line {
         max-height: 44px;
-        @include px2rem(max-height, 44px);
     }
     .vc-min-height {
         min-height: 40px;
-        @include px2rem(max-height, 40px);
     }
     /* compoment */
     .vc-mask {
@@ -70,13 +64,13 @@
     .vc-tabbar {
         border-bottom: 1px solid #D9D9D9;
         overflow-x: auto;
-        @include px2rem(height, 39px);
+        height: pxToem(39px);
         width: auto;
         white-space: nowrap;
         .vc-tab {
             display: inline-block;
-            @include px2rem(line-height, 39px);
-            padding: 0 15px;
+            line-height: pxToem(39px);
+            padding: 0 pxToem(15px);
             border-right: 1px solid #D9D9D9;
             text-decoration: none;
             color: #000;
@@ -95,14 +89,14 @@
         overflow-x: hidden;
         overflow-y: auto;
         position: absolute;
-        @include px2rem(top, 40px);
-        @include px2rem(bottom, 40px);
+        top: pxToem(40px);
         left: 0;
         right: 0;
+        bottom: pxToem(40px);
         -webkit-overflow-scrolling: touch;
     }
     .vc-content.vc-has-topbar {
-        @include px2rem(top, 71px);
+        top: 71px;
     }
     .vc-topbar {
         background-color: #FBF9FE;
@@ -117,11 +111,8 @@
             display: none;
             flex: 1;
             -webkit-box-flex: 1;
-            @include px2rem(line-height, 30px);
-            padding-top: 0;
-            padding-bottom: 0;
-            @include px2rem(padding-right, 15px);
-            @include px2rem(padding-left, 15px);
+            line-height: pxToem(30px);
+            padding: 0 pxToem(15px);
             border-bottom: 1px solid #D9D9D9;
             text-decoration: none;
             text-align: center;
@@ -157,15 +148,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            @include px2rem(font-size, 14px);
+            font-size: pxToem(15px);
             text-align: center;
         }
         .vc-item {
             margin: 0;
-            @include px2rem(padding-top, 6px);
-            @include px2rem(padding-bottom, 6px);
-            @include px2rem(padding-right, 8px);
-            @include px2rem(padding-left, 8px);
+            padding: pxToem(6px) pxToem(8px);
             overflow: hidden;
             line-height: 1.3;
             border-bottom: 1px solid #EEE;
@@ -198,14 +186,13 @@
         }
         .vc-item {
             .vc-item-content {
-                @include px2rem(margin-right, 60px);
+                margin-right: pxToem(60px);
                 display: block;
-                @include px2rem(font-size, 14px);
             }
             .vc-item-meta {
                 color: #888;
                 float: right;
-                @include px2rem(width, 60px);
+                width: pxToem(60px);
                 text-align: right;
             }
         }
@@ -225,14 +212,15 @@
         }
         .vc-item .vc-item-code.vc-item-code-input,
         .vc-item .vc-item-code.vc-item-code-output {
-            @include px2rem(padding-left, 8px);
+            padding-left: pxToem(12px);
         }
         .vc-item .vc-item-code.vc-item-code-input:before,
         .vc-item .vc-item-code.vc-item-code-output:before {
-            content: "›"; // position: absolute;
+            content: "›";
+            position: absolute;
             top: -3px;
             left: 0;
-            @include px2rem(font-size, 16px);
+            font-size: pxToem(16px);
             color: #6A5ACD;
         }
         .vc-item .vc-item-code.vc-item-code-output:before {
@@ -245,7 +233,7 @@
             .vc-fold-outer {
                 display: block;
                 font-style: italic;
-                @include px2rem(padding-left, 10px);
+                padding-left: pxToem(10px);
                 position: relative;
             }
             .vc-fold-outer:active {
@@ -254,29 +242,28 @@
             .vc-fold-outer:before {
                 content: "";
                 position: absolute;
-                @include px2rem(top, 4px);
-                @include px2rem(left, 2px);
+                top: pxToem(4px);
+                left: pxToem(2px);
                 width: 0;
                 height: 0;
-                border: transparent solid;
-                @include px2rem(border-width, 4px);
+                border: transparent solid pxToem(4px);
                 border-left-color: #000;
             }
             .vc-fold-outer.vc-toggle:before {
-                top: 6px;
+                top: pxToem(6px);
                 left: 0;
                 border-top-color: #000;
                 border-left-color: transparent;
             }
             .vc-fold-inner {
                 display: none;
-                @include px2rem(margin-left, 10px);
+                margin-left: pxToem(10px);
             }
             .vc-fold-inner.vc-toggle {
                 display: block;
             }
             .vc-fold-inner .vc-code-key {
-                @include px2rem(margin-left, 10px);
+                margin-left: pxToem(10px);
             }
             .vc-fold-outer .vc-code-key {
                 margin-left: 0;
@@ -305,7 +292,7 @@
         }
         .vc-cmd {
             position: absolute;
-            @include px2rem(height, 40px);
+            height: pxToem(40px);
             left: 0;
             right: 0;
             bottom: 0;
@@ -313,8 +300,9 @@
             display: block!important;
             .vc-cmd-input-wrap {
                 display: block;
-                @include px2rem(height, 28px);
-                @include px2rem(margin-right, 40px);
+                height: pxToem(28px);
+                margin-right: pxToem(40px);
+                padding: pxToem(6px) pxToem(8px);
             }
             .vc-cmd-input {
                 width: 100%;
@@ -322,22 +310,21 @@
                 resize: none;
                 outline: none;
                 padding: 0;
-                @include px2rem(font-size, 14px);
+                font-size: pxToem(12px);
             }
             .vc-cmd-input::-webkit-input-placeholder {
-                @include px2rem(line-height, 26px);
+                line-height: pxToem(28px);
             }
             .vc-cmd-btn {
                 position: absolute;
                 top: 0;
                 right: 0;
                 bottom: 0;
-                @include px2rem(width, 40px);
+                width: 40px;
                 border: none;
                 background-color: #EFEFF4;
                 outline: none;
                 -webkit-touch-callout: none;
-                @include px2rem(font-size, 14px);
             }
             .vc-cmd-btn:active {
                 background-color: rgba(0, 0, 0, 0.15);
@@ -352,7 +339,7 @@
             }
             .vc-group-detail {
                 display: none;
-                padding: 0 0 10px 20px;
+                padding: 0 0 pxToem(10px) pxToem(20px);
                 border-bottom: 1px solid #EEE;
             }
         }
@@ -378,10 +365,7 @@
             .vc-table-col {
                 flex: 1;
                 -webkit-box-flex: 1;
-                @include px2rem(padding-left, 4px);
-                @include px2rem(padding-right, 4px);
-                @include px2rem(padding-top, 3px);
-                @include px2rem(padding-bottom, 3px);
+                padding: 3px 4px;
                 border-left: 1px solid #EEE;
                 overflow: auto;
                 white-space: pre-wrap;
@@ -394,9 +378,8 @@
                 border: none;
             }
             .vc-small .vc-table-col {
-                @include px2rem(padding-left, 4px);
-                @include px2rem(padding-right, 4px);
-                @include px2rem(font-size, 12px);
+                padding: 0 4px;
+                font-size: pxToem(12px);
             }
             .vc-table-col-2 {
                 flex: 2;
@@ -436,7 +419,7 @@
     }
     .vc-toolbar {
         border-top: 1px solid #D9D9D9;
-        @include px2rem(line-height, 39px);
+        line-height: pxToem(39px);
         position: absolute;
         left: 0;
         right: 0;
@@ -466,8 +449,8 @@
         .vc-tool:after {
             content: " ";
             position: absolute;
-            top: 7px;
-            bottom: 7px;
+            top: pxToem(7px);
+            bottom: pxToem(7px);
             right: 0;
             border-left: 1px solid #D9D9D9;
         }

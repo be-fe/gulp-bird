@@ -16,7 +16,7 @@ const cheerio = require('cheerio');
 var toolstart = require('./tools/toolstart.js');
 var createQRcode = require('./tools/createQRcode/createQRcode.js');
 var reload = require('./tools/reload/reload.js');
-
+var vconsole = require('./tools/vconsole/vconsole.js');
 
 var dummyHelpers = {
     dateUTC: function (min, max, options) {
@@ -147,16 +147,19 @@ module.exports = {
                                                 const dir = port + req.url; //端口号和目录后缀
                                                 return createQRcode(data, dir);
                                             })
+                                            .then(data => { // 刷新按钮
+                                                return reload(data);
+                                            })
                                             .then(data => { // weinre自动注入
                                                 return injectWeinre(data, toolsConf.weinre);
                                             })
-                                            .then(data => { // 刷新按钮
-                                                return reload(data);
+                                            .then(data => { // vconsole
+                                                return vconsole(data);
                                             })
                                             .then(data => {
                                                 $('.bird-tools__menu').append(data);
                                                 const body = cheerio.load(fs.readFileSync(realPath, "utf-8"));
-                                                body('body').append($.html());
+                                                body('body').before($.html());
                                                 res.write(body.html());
                                                 res.end();
                                             });

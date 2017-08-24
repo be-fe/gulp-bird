@@ -92,8 +92,8 @@
   }
 </style>
 <div class="bird-tools__wrap">
-  <a class="bird-tools__btn_add" onclick="toogleMenu()">
-    <svg t="1502437992902" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2512"
+  <a class="bird-tools__btn_add" onclick="toogleBirdToolsMenu()">
+    <svg t="1502437992902" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2512"
       xmlns:xlink="http://www.w3.org/1999/xlink" width="70%" height="70%">
       <defs>
         <style type="text/css"></style>
@@ -109,7 +109,7 @@
   var birdToolsShowMenu = false;
   var addBtn = document.querySelector('.bird-tools__btn_add');
   var toolMenu = document.querySelector('.bird-tools__menu');
-  function toogleMenu() {
+  function toogleBirdToolsMenu() {
     if (birdToolsShowMenu) { // 收起菜单栏
       toolMenu.classList.add('hide');
       addBtn.classList.remove('close');
@@ -119,5 +119,4 @@
     }
     birdToolsShowMenu = !birdToolsShowMenu;
   }
-
 </script>

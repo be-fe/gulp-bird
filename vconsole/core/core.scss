@@ -1,0 +1,489 @@
+//如果不覆盖，设置一个默认字体大小（以像素为单位） 
+$base-font-size: 75 !default; //将px转换成em 
+@function strip-units($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+//当元素的父元素没有重置字体大小时，相对于16px计算，如果你要将12px转换成em时，可以写成`pxToem(12px)` 
+//当元素的父元素重置了字体大小时，如24px，如果你要将12px转换成em时,可以写成`pxToem(12px,24px)` 
+//另外你还可以不显式的写也单位`px` 
+@function pxToem($target-size, $context:$base-font-size) {
+    @if not unitless($target-size) {
+        //unitless(12)=>true,unitless(12px)=>false 
+        $target-size: strip-units($target-size); //去掉 $target-size单位 } 
+    }
+    @if not unitless($context) {
+        $context: strip-units($context); //去掉 $context单位 
+    }
+    @return ($target-size / $context) * 1em;
+}
+
+#__vconsole {
+    color: #000;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    /* global */
+    .vc-max-height {
+        max-height: pxToem(500px);
+    }
+    .vc-max-height-line {
+        max-height: pxToem(88px);
+    }
+    .vc-min-height {
+        min-height: pxToem(80px);
+    }
+    /* compoment */
+    .vc-mask {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0);
+        z-index: 10001;
+        transition: background .3s;
+        -webkit-tap-highlight-color: transparent;
+        overflow-y: scroll;
+    }
+    .vc-panel {
+        display: none;
+        position: fixed;
+        min-height: 85%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10002;
+        background-color: #EFEFF4;
+        -webkit-transition: -webkit-transform .3s;
+        transition: -webkit-transform .3s;
+        transition: transform .3s;
+        transition: transform .3s, -webkit-transform .3s;
+        -webkit-transform: translate(0, 100%);
+        transform: translate(0, 100%);
+    }
+    .vc-tabbar {
+        border-bottom: 1px solid #D9D9D9;
+        overflow-x: auto;
+        height: pxToem(78px);
+        line-height: 0; //修复子元素 inline-block 的间距 bug
+        width: auto;
+        white-space: nowrap;
+        .vc-tab {
+            display: inline-block;
+            border-right: 1px solid #D9D9D9;
+            text-decoration: none;
+            color: #000;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            font-size: pxToem(26px);
+            line-height: pxToem(78px, 26);
+            padding: 0 pxToem(15, 26);
+        }
+        .vc-tab:active {
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+        .vc-tab.vc-actived {
+            background-color: #FFF;
+        }
+    }
+    .vc-content {
+        background-color: #FFF;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: absolute;
+        top: pxToem(80px);
+        left: 0;
+        right: 0;
+        bottom: pxToem(80px); // font-size: pxToem(26px);
+        -webkit-overflow-scrolling: touch;
+    }
+    .vc-content.vc-has-topbar {
+        top: pxToem(142px);
+    }
+    .vc-topbar {
+        background-color: #FBF9FE;
+        display: flex;
+        display: -webkit-box;
+        flex-direction: row;
+        flex-wrap: wrap;
+        -webkit-box-direction: row;
+        -webkit-flex-wrap: wrap;
+        width: 100%;
+        .vc-toptab {
+            display: none;
+            flex: 1;
+            -webkit-box-flex: 1;
+            line-height: pxToem(60, 26);
+            padding: 0 pxToem(30, 26);
+            border-bottom: 1px solid #D9D9D9;
+            text-decoration: none;
+            text-align: center;
+            color: #000;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            font-size: pxToem(26px);
+        }
+        .vc-toptab.vc-toggle {
+            display: block;
+        }
+        .vc-toptab:active {
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+        .vc-toptab.vc-actived {
+            border-bottom: 1px solid #3e82f7;
+        }
+    }
+    .vc-logbox {
+        display: none;
+        position: relative;
+        min-height: 100%;
+        line-height: 0;
+        i {
+            font-style: normal;
+        }
+        .vc-log {
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: pxToem(80px);
+        }
+        .vc-log:empty:before {
+            content: "Empty";
+            color: #999;
+            position: absolute;
+            top: 45%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: pxToem(28px);
+            text-align: center;
+        }
+        .vc-item {
+            margin: 0;
+            padding: pxToem(12) pxToem(16);
+            overflow: hidden;
+            line-height: 1.3;
+            border-bottom: 1px solid #EEE;
+            word-break: break-word;
+        }
+        .vc-item-info {
+            color: #6A5ACD;
+        }
+        .vc-item-debug {
+            color: #DAA520;
+        }
+        .vc-item-warn {
+            color: #FFA500;
+            border-color: #FFB930;
+            background-color: #FFFACD;
+        }
+        .vc-item-error {
+            color: #DC143C;
+            border-color: #F4A0AB;
+            background-color: #FFE4E1;
+        }
+        .vc-log.vc-log-partly .vc-item {
+            display: none;
+        }
+        .vc-log.vc-log-partly-log .vc-item-log,
+        .vc-log.vc-log-partly-info .vc-item-info,
+        .vc-log.vc-log-partly-warn .vc-item-warn,
+        .vc-log.vc-log-partly-error .vc-item-error {
+            display: block;
+        }
+        .vc-item {
+            .vc-item-content {
+                font-size: pxToem(26px);
+                margin-right: pxToem(60px);
+                display: block;
+            }
+            .vc-item-meta {
+                color: #888;
+                float: right;
+                width: pxToem(60px);
+                text-align: right;
+                font-size: pxToem(26px);
+            }
+        }
+        .vc-item.vc-item-nometa {
+            .vc-item-content {
+                margin-right: 0;
+            }
+            .vc-item-meta {
+                display: none;
+            }
+        }
+        .vc-item .vc-item-code {
+            display: block;
+            white-space: pre-wrap;
+            overflow: auto;
+            position: relative;
+        }
+        .vc-item .vc-item-code.vc-item-code-input,
+        .vc-item .vc-item-code.vc-item-code-output {
+            padding-left: pxToem(24px);
+            margin: 0;
+        }
+        .vc-item .vc-item-code.vc-item-code-input:before,
+        .vc-item .vc-item-code.vc-item-code-output:before {
+            content: "›";
+            top: -3px;
+            left: 0;
+            margin-right: pxToem(10, 32);
+            font-size: pxToem(32, 26);
+            color: #6A5ACD;
+        }
+        .vc-item .vc-item-code.vc-item-code-output:before {
+            content: "‹";
+        }
+        .vc-item .vc-fold {
+            display: block;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            .vc-fold-outer {
+                display: block;
+                font-style: italic;
+                padding-left: pxToem(20, 26);
+                position: relative;
+            }
+            .vc-fold-outer:active {
+                background-color: #E6E6E6;
+            }
+            .vc-fold-outer:before {
+                content: "";
+                position: absolute;
+                top: pxToem(16px);
+                left: pxToem(8px);
+                width: 0;
+                height: 0;
+                border: transparent solid pxToem(8px);
+                border-left-color: #000;
+                font-size: pxToem(40, 26);
+            }
+            .vc-fold-outer.vc-toggle:before {
+                top: pxToem(6px);
+                left: 0;
+                border-top-color: #000;
+                border-left-color: transparent;
+            }
+            .vc-fold-inner {
+                display: none;
+                margin-left: pxToem(10px);
+            }
+            .vc-fold-inner.vc-toggle {
+                display: block;
+            }
+            .vc-fold-inner .vc-code-key {
+                margin-left: pxToem(10px);
+            }
+            .vc-fold-outer .vc-code-key {
+                margin-left: 0;
+            }
+        }
+        .vc-code-key {
+            color: #905;
+        }
+        .vc-code-private-key {
+            color: #D391B5;
+        }
+        .vc-code-function {
+            color: #905;
+            font-style: italic;
+        }
+        .vc-code-number,
+        .vc-code-boolean {
+            color: #0086B3;
+        }
+        .vc-code-string {
+            color: #183691;
+        }
+        .vc-code-null,
+        .vc-code-undefined {
+            color: #666;
+        }
+        .vc-cmd {
+            position: absolute;
+            height: pxToem(80px);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-top: 1px solid #D9D9D9;
+            display: block!important;
+            .vc-cmd-input-wrap {
+                display: block;
+                height: pxToem(56px);
+                margin-right: pxToem(88px);
+            }
+            .vc-cmd-input {
+                width: 100%;
+                border: none;
+                resize: none;
+                outline: none;
+                // padding: pxToem(10,20) pxToem(16,20);
+                padding: 0;
+                font-size: pxToem(24px);
+            }
+            .vc-cmd-input::-webkit-input-placeholder {
+                line-height: pxToem(80px);
+            }
+            .vc-cmd-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                font-size: pxToem(24px);
+                width: pxToem(80, 24);
+                border: none;
+                background-color: #EFEFF4;
+                outline: none;
+                -webkit-touch-callout: none;
+            }
+            .vc-cmd-btn:active {
+                background-color: rgba(0, 0, 0, 0.15);
+            }
+        }
+        .vc-group {
+            .vc-group-preview {
+                -webkit-touch-callout: none;
+            }
+            .vc-group-preview:active {
+                background-color: #E6E6E6;
+            }
+            .vc-group-detail {
+                display: none;
+                padding: 0 0 pxToem(10px) pxToem(20px);
+                border-bottom: 1px solid #EEE;
+            }
+        }
+        .vc-group.vc-actived {
+            .vc-group-detail {
+                display: block;
+            }
+        }
+        .vc-table {
+            font-size: pxToem(26px);
+            line-height: 1.2;
+            .vc-table-row {
+                display: flex;
+                display: -webkit-flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                -webkit-box-direction: row;
+                -webkit-flex-wrap: wrap;
+                margin: 0;
+                overflow: hidden;
+                border-bottom: 1px solid #EEE;
+            }
+            .vc-table-row.vc-left-border {
+                border-left: 1px solid #EEE;
+            }
+            .vc-table-col {
+                flex: 1;
+                -webkit-box-flex: 1;
+                margin: 0;
+                padding: 3px 4px;
+                border-left: 1px solid #EEE;
+                overflow: auto;
+                white-space: pre-wrap;
+                word-break: break-word;
+                -webkit-overflow-scrolling: touch;
+            }
+            .vc-table-col:first-child {
+                border: none;
+            }
+            .vc-small .vc-table-col {
+                padding: 0 pxToem(4, 24);
+                ;
+                font-size: pxToem(24px);
+            }
+            .vc-table-col-2 {
+                flex: 2;
+                -webkit-box-flex: 2;
+            }
+            .vc-table-col-3 {
+                flex: 3;
+                -webkit-box-flex: 3;
+            }
+            .vc-table-col-4 {
+                flex: 4;
+                -webkit-box-flex: 4;
+            }
+            .vc-table-col-5 {
+                flex: 5;
+                -webkit-box-flex: 5;
+            }
+            .vc-table-col-6 {
+                flex: 6;
+                -webkit-box-flex: 6;
+            }
+            .vc-table-row-error {
+                border-color: #F4A0AB;
+                background-color: #FFE4E1;
+                .vc-table-col {
+                    color: #DC143C;
+                    border-color: #F4A0AB;
+                }
+            }
+            .vc-table-col-title {
+                font-weight: bold;
+            }
+        }
+    }
+    .vc-logbox.vc-actived {
+        display: block;
+    }
+    .vc-toolbar {
+        border-top: 1px solid #D9D9D9;
+        line-height: pxToem(78px);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        display: -webkit-box;
+        flex-direction: row;
+        -webkit-box-direction: row;
+        .vc-tool {
+            font-size: pxToem(26px);
+            display: none;
+            text-decoration: none;
+            color: #000;
+            width: 50%;
+            flex: 1;
+            -webkit-box-flex: 1;
+            text-align: center;
+            position: relative;
+            -webkit-touch-callout: none;
+        }
+        .vc-tool.vc-toggle,
+        .vc-tool.vc-global-tool {
+            display: block;
+        }
+        .vc-tool:active {
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+        .vc-tool:after {
+            content: " ";
+            position: absolute;
+            top: pxToem(7px);
+            bottom: pxToem(7px);
+            right: 0;
+            border-left: 1px solid #D9D9D9;
+        }
+        .vc-tool-last:after {
+            border: none;
+        }
+    }
+}
+
+#__vconsole.vc-toggle {
+    .vc-switch {
+        display: none;
+    }
+    .vc-mask {
+        background: rgba(0, 0, 0, 0.6);
+        display: block;
+    }
+    .vc-panel {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+}

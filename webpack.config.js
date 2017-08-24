@@ -33,12 +33,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.BannerPlugin([
-        pkg.name + ' v' + pkg.version + ' (' + pkg.homepage + ')',
-        'Copyright ' + new Date().getFullYear() + ', ' + pkg.author,
-        pkg.license +' license'
-    ].join('\n'))
-    ,new webpack.optimize.UglifyJsPlugin({
+    new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
       }

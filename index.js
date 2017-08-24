@@ -153,9 +153,9 @@ module.exports = {
                                             .then(data => { // weinre自动注入
                                                 return injectWeinre(data, toolsConf.weinre);
                                             })
-                                            // .then(data => { // vconsole
-                                            //     return vconsole(data);
-                                            // })
+                                            .then(data => { // vconsole
+                                                return vconsole(data);
+                                            })
                                             .then(data => {
                                                 $('.bird-tools__menu').append(data);
                                                 const body = cheerio.load(fs.readFileSync(realPath, "utf-8"));

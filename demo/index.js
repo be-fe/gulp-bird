@@ -2,12 +2,11 @@
 // 普通日志 log
 console.log('普通日志 log');
 console.log('普通日志 log1');
-console.log('普通日志 log222');
-console.log('普通日志 log3333');
-console.log('普通日志 log444444');
 
 // 信息日志 info
 console.info('信息日志 info');
+console.info('信息日志 info1');
+
 // 调试日志 debug
 console.debug('调试日志 debug');
 // 警告日志 warn

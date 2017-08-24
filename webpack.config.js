@@ -8,7 +8,7 @@ module.exports = {
     vconsole : './vconsole/vconsole.js'
   },
   output: {
-    path: './demo',
+    path: './tools/vconsole',
     filename: '[name].min.js',
     library: 'vConsole',
     libraryTarget: 'umd',

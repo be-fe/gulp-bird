@@ -38,7 +38,7 @@ var service = function(servers, rules, toolsConf) {
         if (servers[port].ignoreRegExp && req.url.match(servers[port].ignoreRegExp)) {
             console.log("ignore request:" + req.url);
             if (typeof transpond === "function" && rules) {
-                transpond(req, res, rules);
+                transpond(req, res, rules, next);
             }
             return false;
         }
@@ -48,7 +48,7 @@ var service = function(servers, rules, toolsConf) {
             fs.stat(realPath, function (err, stats) {
                 if (err) {
                     if (typeof transpond === "function" && rules) {
-                        transpond(req, res, rules);
+                        transpond(req, res, rules, next);
                     }
                     else {
                         //console.log(req.url + " 404");

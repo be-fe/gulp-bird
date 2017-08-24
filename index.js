@@ -37,7 +37,7 @@ var service = function(servers, rules, toolsConf) {
         //匹配忽略列表，若匹配直接抛给回调函数
         if (servers[port].ignoreRegExp && req.url.match(servers[port].ignoreRegExp)) {
             console.log("ignore request:" + req.url);
-            if (typeof transpond === "function") {
+            if (typeof transpond === "function" && rules) {
                 transpond(req, res, rules);
             }
             return false;
@@ -47,15 +47,21 @@ var service = function(servers, rules, toolsConf) {
             // console.log(realPath);
             fs.stat(realPath, function (err, stats) {
                 if (err) {
-                    if (typeof transpond === "function") {
+                    if (typeof transpond === "function" && rules) {
                         transpond(req, res, rules);
-                    } else {
+                    }
+                    else {
                         //console.log(req.url + " 404");
-                        res.writeHead(404, {
-                            "Content-Type": "text/plain"
-                        });
-                        res.write("This request URL " + pathname + " was not found on this server.");
-                        res.end();
+                        if (!next) {
+                            res.writeHead(404, {
+                                "Content-Type": "text/plain"
+                            });
+                            res.write("This request URL " + pathname + " was not found on this server.");
+                            res.end();
+                        }
+                        else {
+                            next();
+                        }
                     }
 
                 }

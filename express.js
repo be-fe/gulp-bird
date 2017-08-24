@@ -49,7 +49,7 @@ var toolsConf = {
 
 
 app.use(fileServer.middleware(serverSettings, transRules, toolsConf));
-app.use(express.static(path.join(__dirname, '/demo')));
+// app.use(express.static(path.join(__dirname, '/demo')));
 
 
 app.listen(7676);

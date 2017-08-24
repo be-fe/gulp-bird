@@ -201,6 +201,13 @@ var service = function(servers, rules, toolsConf) {
 
 
 module.exports = {
+
+    middleware: function(params, rules, toolsConf) {
+        var servers = params || {};
+        toolsConf && toolsConf.weinre && startWeinre(toolsConf.weinre);
+        return service(servers, rules, toolsConf);
+    },
+
     start: function (params, rules, toolsConf) {
         var servers = params || {};
         var serverList = [];

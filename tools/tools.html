@@ -1,7 +1,7 @@
 <style>
     .bird-tools__wrap {
         position: fixed;
-        bottom: 0;
+        top: 0;
         right: 0;
         display: flex;
         flex-direction: column-reverse;
@@ -155,7 +155,7 @@
                 this.btn.addEventListener('touchmove', function (e) {
                     if (e.touches.length > 0) {
                         var offsetX = e.touches[0].pageX - that.pos.startX,
-                            offsetY = e.touches[0].pageY - that.pos.startY;
+                            offsetY = that.pos.startY - e.touches[0].pageY;
 
                         var x = that.pos.x - offsetX,
                             y = that.pos.y - offsetY;
@@ -166,15 +166,15 @@
                         }
                         // 使用 screen.height 而不是 documentElement.offsetWidth 
                         // 防止页面没有被撑满的情况
-                        if (y + that.toolsEl.offsetHeight > (screen.height * window.devicePixelRatio)) {
-                            y = screen.height * window.devicePixelRatio - that.toolsEl.offsetHeight;
+                        if (y + that.toolsEl.offsetHeight > document.documentElement.clientHeight) {
+                            y = document.documentElement.clientHeight - that.toolsEl.offsetHeight;
                         }
 
                         if (x < 0) { x = 0; }
                         if (y < 0) { y = 0; }
 
                         that.toolsEl.style.right = x + 'px';
-                        that.toolsEl.style.bottom = y + 'px';
+                        that.toolsEl.style.top = y + 'px';
                         that.pos.endX = x;
                         that.pos.endY = y;
                         e.preventDefault();
@@ -189,7 +189,7 @@
                     that.pos.x = posX;
                     that.pos.y = posY;
                     that.toolsEl.style.right = that.pos.x + 'px';
-                    that.toolsEl.style.bottom = that.pos.y + 'px';
+                    that.toolsEl.style.top = that.pos.y + 'px';
                 }
             }
 

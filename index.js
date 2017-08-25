@@ -138,7 +138,7 @@ var service = function(servers, rules, toolsConf) {
                                         return injectWeinre(data, toolsConf.weinre);
                                     })
                                     .then(data => { // vconsole
-                                        return vconsole(data);
+                                        return vconsole(data, toolsConf.weinre);
                                     })
                                     .then(data => {
                                         $('.bird-tools__menu').append(data);

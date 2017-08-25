@@ -105,94 +105,97 @@
 </div>
 
 <script>
-    const $birdTools = {
-        toolsEl: document.querySelector('.bird-tools__wrap'),
-        btn: document.querySelector('.bird-tools__btn_add'),
-        menu: document.querySelector('.bird-tools__menu'),
-        showMenu: false,
-        pos: {
-            x: 10, // right
-            y: 10, // bottom
-            startX: 0,
-            startY: 0,
-            endX: 0,
-            endY: 0
-        },
-        init: function () {
-            this.getLocalPos();
-            this.bindEvent();
-        },
-        bindEvent: function () {
-            // 菜单栏的展开收起
-            this.btn.addEventListener('click', () => {
-                if (this.ShowMenu) {
-                    this.menu.classList.add('hide');
-                    this.btn.classList.remove('close');
-                } else {
-                    this.menu.classList.remove('hide');
-                    this.btn.classList.add('close');
-                }
-                this.ShowMenu = !this.ShowMenu;
-            });
-
-            // 拖拽
-            this.btn.addEventListener('touchstart', (e) => {
-                this.pos.startX = e.touches[0].pageX;
-                this.pos.startY = e.touches[0].pageY;
-            });
-            this.btn.addEventListener('touchend', (e) => {
-                this.pos.x = this.pos.endX;
-                this.pos.y = this.pos.endY;
-                this.pos.startX = 0;
-                this.pos.startY = 0;
-                this.pos.endX = 0;
-                this.pos.endY = 0;
-
-                localStorage.setItem('birdTools_Y', this.pos.y);
-                localStorage.setItem('birdTools_X', this.pos.x);
-            });
-            this.btn.addEventListener('touchmove', (e) => {
-                if (e.touches.length > 0) {
-                    let offsetX = e.touches[0].pageX - this.pos.startX,
-                        offsetY = e.touches[0].pageY - this.pos.startY;
-
-                    let x = this.pos.x - offsetX,
-                        y = this.pos.y - offsetY;
-
-                    // 边缘检测
-                    if (x + this.toolsEl.offsetWidth > document.documentElement.offsetWidth) {
-                        x = document.documentElement.offsetWidth - this.toolsEl.offsetWidth;
+    (function () {
+        var $birdTools = {
+            toolsEl: document.querySelector('.bird-tools__wrap'),
+            btn: document.querySelector('.bird-tools__btn_add'),
+            menu: document.querySelector('.bird-tools__menu'),
+            showMenu: false,
+            pos: {
+                x: 10, // right
+                y: 10, // bottom
+                startX: 0,
+                startY: 0,
+                endX: 0,
+                endY: 0
+            },
+            init: function () {
+                this.getLocalPos();
+                this.bindEvent();
+            },
+            bindEvent: function () {
+                var that = this;
+                // 菜单栏的展开收起
+                this.btn.addEventListener('click', function () {
+                    if (that.ShowMenu) {
+                        that.menu.classList.add('hide');
+                        that.btn.classList.remove('close');
+                    } else {
+                        that.menu.classList.remove('hide');
+                        that.btn.classList.add('close');
                     }
-                    // 使用 screen.height 而不是 documentElement.offsetWidth 
-                    // 防止页面没有被撑满的情况
-                    if (y + this.toolsEl.offsetHeight > (screen.height * window.devicePixelRatio)) {
-                        y = screen.height * window.devicePixelRatio - this.toolsEl.offsetHeight;
+                    that.ShowMenu = !that.ShowMenu;
+                });
+
+                // 拖拽
+                this.btn.addEventListener('touchstart', function (e) {
+                    that.pos.startX = e.touches[0].pageX;
+                    that.pos.startY = e.touches[0].pageY;
+                });
+                this.btn.addEventListener('touchend', function (e) {
+
+                    that.pos.x = that.pos.endX;
+                    that.pos.y = that.pos.endY;
+                    that.pos.startX = 0;
+                    that.pos.startY = 0;
+
+                    localStorage.setItem('birdTools_Y', that.pos.y);
+                    localStorage.setItem('birdTools_X', that.pos.x);
+                });
+                this.btn.addEventListener('touchmove', function (e) {
+                    if (e.touches.length > 0) {
+                        var offsetX = e.touches[0].pageX - that.pos.startX,
+                            offsetY = e.touches[0].pageY - that.pos.startY;
+
+                        var x = that.pos.x - offsetX,
+                            y = that.pos.y - offsetY;
+
+                        // 边缘检测
+                        if (x + that.toolsEl.offsetWidth > document.documentElement.offsetWidth) {
+                            x = document.documentElement.offsetWidth - that.toolsEl.offsetWidth;
+                        }
+                        // 使用 screen.height 而不是 documentElement.offsetWidth 
+                        // 防止页面没有被撑满的情况
+                        if (y + that.toolsEl.offsetHeight > (screen.height * window.devicePixelRatio)) {
+                            y = screen.height * window.devicePixelRatio - that.toolsEl.offsetHeight;
+                        }
+
+                        if (x < 0) { x = 0; }
+                        if (y < 0) { y = 0; }
+
+                        that.toolsEl.style.right = x + 'px';
+                        that.toolsEl.style.bottom = y + 'px';
+                        that.pos.endX = x;
+                        that.pos.endY = y;
+                        e.preventDefault();
                     }
-
-                    if (x < 0) { x = 0; }
-                    if (y < 0) { y = 0; }
-
-                    this.toolsEl.style.right = x + 'px';
-                    this.toolsEl.style.bottom = y + 'px';
-                    this.pos.endX = x;
-                    this.pos.endY = y;
-                    e.preventDefault();
+                });
+            },
+            getLocalPos: function () {
+                var that = this;
+                var posX = localStorage.getItem('birdTools_X') * 1,
+                    posY = localStorage.getItem('birdTools_Y') * 1;
+                if (posX || posY) {
+                    that.pos.x = posX;
+                    that.pos.y = posY;
+                    that.toolsEl.style.right = that.pos.x + 'px';
+                    that.toolsEl.style.bottom = that.pos.y + 'px';
                 }
-            });
-        },
-        getLocalPos: function () {
-            let posX = localStorage.getItem('birdTools_X') * 1,
-                posY = localStorage.getItem('birdTools_Y') * 1;
-            if (posX || posY) {
-                this.pos.x = posX;
-                this.pos.y = posY;
-                this.toolsEl.style.right = this.pos.x + 'px';
-                this.toolsEl.style.bottom = this.pos.y + 'px';
             }
+
         }
 
-    }
-
-    $birdTools.init();
+        $birdTools.init();
+    }())
 
 </script>

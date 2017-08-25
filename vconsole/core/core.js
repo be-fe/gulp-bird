@@ -187,45 +187,6 @@ class VConsole {
   _bindEvent() {
     let that = this;
 
-    // drag & drop switch button
-    let $switch = $.one('.vc-switch', that.$dom);
-    $.bind($switch, 'touchstart', function (e) {
-      that.switchPos.startX = e.touches[0].pageX;
-      that.switchPos.startY = e.touches[0].pageY;
-    });
-    $.bind($switch, 'touchend', function (e) {
-      that.switchPos.x = that.switchPos.endX;
-      that.switchPos.y = that.switchPos.endY;
-      that.switchPos.startX = 0;
-      that.switchPos.startY = 0;
-      that.switchPos.endX = 0;
-      that.switchPos.endY = 0;
-      tool.setStorage('switch_x', that.switchPos.x);
-      tool.setStorage('switch_y', that.switchPos.y);
-    });
-    $.bind($switch, 'touchmove', function (e) {
-      if (e.touches.length > 0) {
-        let offsetX = e.touches[0].pageX - that.switchPos.startX,
-          offsetY = e.touches[0].pageY - that.switchPos.startY;
-        let x = that.switchPos.x - offsetX,
-          y = that.switchPos.y - offsetY;
-        // check edge
-        if (x + $switch.offsetWidth > document.documentElement.offsetWidth) {
-          x = document.documentElement.offsetWidth - $switch.offsetWidth;
-        }
-        if (y + $switch.offsetHeight > document.documentElement.offsetHeight) {
-          y = document.documentElement.offsetHeight - $switch.offsetHeight;
-        }
-        if (x < 0) { x = 0; }
-        if (y < 0) { y = 0; }
-        $switch.style.right = x + 'px';
-        $switch.style.bottom = y + 'px';
-        that.switchPos.endX = x;
-        that.switchPos.endY = y;
-        e.preventDefault();
-      }
-    });
-
     // show console panel
     $.bind($.one('.vc-switch', that.$dom), 'click', function () {
       that.show();

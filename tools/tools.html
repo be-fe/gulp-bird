@@ -1,122 +1,201 @@
 <style>
-  .bird-tools__wrap {
-    position: fixed;
-    bottom: 17vw;
-    right: 4vw;
-    display: flex;
-    flex-direction: column-reverse;
-    z-index: 9999999;
-  }
+    .bird-tools__wrap {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column-reverse;
+        z-index: 9999999;
+    }
 
-  .bird-tools__btn_add,
-  .bird-tools__item > a {
-    width: 10vw;
-    height: 10vw;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-radius: 50%;
-    color: #ffffff;
-    background: #d4608c;
-    box-shadow: 1px 1px 2px #888888;
-    text-align: center;
-    transition: all linear .2s;
-  }
-
-
-  .bird-tools__btn_add .icon {
-    transition: all linear .2s;
-  }
-
-  .bird-tools__btn_add.close {
-    transform: scale(0.9);
-  }
-
-  .bird-tools__btn_add.close .icon {
-    transform: rotate(-45deg);
-  }
-  /* 公用部分 */
-
-  .bird-tools__menu {
-    padding: 0;
-    margin: 0;
-    transition: all linear .2s;
-  }
-
-  .bird-tools__menu.hide {
-    visibility: hidden;
-    opacity: 0;
-  }
-
-
-  .bird-tools__item {
-    list-style: none;
-    margin-bottom: 0.8vw;
-  }
-  /* 限制最大宽高 */
-
-  @media screen and (min-resolution: 1dppx) {
     .bird-tools__btn_add,
     .bird-tools__item>a {
-      max-width: 50px;
-      max-height: 50px;
+        width: 10vw;
+        height: 10vw;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 50%;
+        color: #ffffff;
+        background: #d4608c;
+        box-shadow: 1px 1px 2px #888888;
+        text-align: center;
+        transition: all linear .2s;
     }
-  }
 
-  @media screen and (min-resolution: 2dppx) {
-    .bird-tools__btn_add,
-    .bird-tools__item>a {
-      max-width: 110px;
-      max-height: 110px;
+
+    .bird-tools__btn_add .icon {
+        transition: all linear .2s;
     }
-  }
 
-  @media screen and (min-resolution: 3dppx) {
-    .bird-tools__btn_add,
-    .bird-tools__item>a {
-      max-width: 180px;
-      max-height: 180px;
+    .bird-tools__btn_add.close {
+        transform: scale(0.9);
     }
-  }
 
-  /* 横屏模式使用vh为单位 */
-
-  @media screen and (orientation: landscape) {
-    .bird-tools__btn_add,
-    .bird-tools__item>a {
-      width: 10vh;
-      height: 10vh;
+    .bird-tools__btn_add.close .icon {
+        transform: rotate(-45deg);
     }
-  }
+    /* 公用部分 */
+
+    .bird-tools__menu {
+        padding: 0;
+        margin: 0;
+        transition: all linear .2s;
+    }
+
+    .bird-tools__menu.hide {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+
+    .bird-tools__item {
+        list-style: none;
+        margin-bottom: 0.8vw;
+    }
+    /* 限制最大宽高 */
+
+    @media screen and (min-resolution: 1dppx) {
+        .bird-tools__btn_add,
+        .bird-tools__item>a {
+            max-width: 50px;
+            max-height: 50px;
+        }
+    }
+
+    @media screen and (min-resolution: 2dppx) {
+        .bird-tools__btn_add,
+        .bird-tools__item>a {
+            max-width: 110px;
+            max-height: 110px;
+        }
+    }
+
+    @media screen and (min-resolution: 3dppx) {
+        .bird-tools__btn_add,
+        .bird-tools__item>a {
+            max-width: 180px;
+            max-height: 180px;
+        }
+    }
+    /* 横屏模式使用vh为单位 */
+
+    @media screen and (orientation: landscape) {
+        .bird-tools__btn_add,
+        .bird-tools__item>a {
+            width: 10vh;
+            height: 10vh;
+        }
+    }
 </style>
-<div class="bird-tools__wrap">
-  <a class="bird-tools__btn_add" onclick="toogleBirdToolsMenu()">
-    <svg t="1502437992902" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2512"
-      xmlns:xlink="http://www.w3.org/1999/xlink" width="70%" height="70%">
-      <defs>
-        <style type="text/css"></style>
-      </defs>
-      <path d="M512 998.4c25.6 0 51.2-19.2 51.2-51.2v-384h390.4c25.6 0 51.2-19.2 51.2-51.2 0-25.6-19.2-51.2-51.2-51.2H563.2v-384c0-25.6-19.2-51.2-51.2-51.2-25.6 0-51.2 19.2-51.2 51.2v390.4h-384c-25.6-6.4-51.2 19.2-51.2 44.8 0 25.6 19.2 51.2 51.2 51.2h390.4v390.4c-6.4 19.2 19.2 44.8 44.8 44.8"
-        fill="#ffffff" p-id="2513"></path>
-    </svg>
-  </a>
-  <ul class="bird-tools__menu hide"></ul>
+<div class="bird-tools__wrap" draggable="true">
+    <a class="bird-tools__btn_add" draggable="true">
+        <svg t="1502437992902" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2512"
+            xmlns:xlink="http://www.w3.org/1999/xlink" width="70%" height="70%">
+            <defs>
+                <style type="text/css"></style>
+            </defs>
+            <path d="M512 998.4c25.6 0 51.2-19.2 51.2-51.2v-384h390.4c25.6 0 51.2-19.2 51.2-51.2 0-25.6-19.2-51.2-51.2-51.2H563.2v-384c0-25.6-19.2-51.2-51.2-51.2-25.6 0-51.2 19.2-51.2 51.2v390.4h-384c-25.6-6.4-51.2 19.2-51.2 44.8 0 25.6 19.2 51.2 51.2 51.2h390.4v390.4c-6.4 19.2 19.2 44.8 44.8 44.8"
+                fill="#ffffff" p-id="2513"></path>
+        </svg>
+    </a>
+    <ul class="bird-tools__menu hide"></ul>
 </div>
 
 <script>
-  var birdToolsShowMenu = false;
-  var addBtn = document.querySelector('.bird-tools__btn_add');
-  var toolMenu = document.querySelector('.bird-tools__menu');
-  function toogleBirdToolsMenu() {
-    if (birdToolsShowMenu) { // 收起菜单栏
-      toolMenu.classList.add('hide');
-      addBtn.classList.remove('close');
-    } else { // 展开菜单栏
-      toolMenu.classList.remove('hide');
-      addBtn.classList.add('close');
-    }
-    birdToolsShowMenu = !birdToolsShowMenu;
-  }
+    (function () {
+        var $birdTools = {
+            toolsEl: document.querySelector('.bird-tools__wrap'),
+            btn: document.querySelector('.bird-tools__btn_add'),
+            menu: document.querySelector('.bird-tools__menu'),
+            showMenu: false,
+            pos: {
+                x: 10, // right
+                y: 10, // bottom
+                startX: 0,
+                startY: 0,
+                endX: 0,
+                endY: 0
+            },
+            init: function () {
+                this.getLocalPos();
+                this.bindEvent();
+            },
+            bindEvent: function () {
+                var that = this;
+                // 菜单栏的展开收起
+                this.btn.addEventListener('click', function () {
+                    if (that.ShowMenu) {
+                        that.menu.classList.add('hide');
+                        that.btn.classList.remove('close');
+                    } else {
+                        that.menu.classList.remove('hide');
+                        that.btn.classList.add('close');
+                    }
+                    that.ShowMenu = !that.ShowMenu;
+                });
+
+                // 拖拽
+                this.btn.addEventListener('touchstart', function (e) {
+                    that.pos.startX = e.touches[0].pageX;
+                    that.pos.startY = e.touches[0].pageY;
+                });
+                this.btn.addEventListener('touchend', function (e) {
+
+                    that.pos.x = that.pos.endX;
+                    that.pos.y = that.pos.endY;
+                    that.pos.startX = 0;
+                    that.pos.startY = 0;
+
+                    localStorage.setItem('birdTools_Y', that.pos.y);
+                    localStorage.setItem('birdTools_X', that.pos.x);
+                });
+                this.btn.addEventListener('touchmove', function (e) {
+                    if (e.touches.length > 0) {
+                        var offsetX = e.touches[0].pageX - that.pos.startX,
+                            offsetY = e.touches[0].pageY - that.pos.startY;
+
+                        var x = that.pos.x - offsetX,
+                            y = that.pos.y - offsetY;
+
+                        // 边缘检测
+                        if (x + that.toolsEl.offsetWidth > document.documentElement.offsetWidth) {
+                            x = document.documentElement.offsetWidth - that.toolsEl.offsetWidth;
+                        }
+                        // 使用 screen.height 而不是 documentElement.offsetWidth 
+                        // 防止页面没有被撑满的情况
+                        if (y + that.toolsEl.offsetHeight > (screen.height * window.devicePixelRatio)) {
+                            y = screen.height * window.devicePixelRatio - that.toolsEl.offsetHeight;
+                        }
+
+                        if (x < 0) { x = 0; }
+                        if (y < 0) { y = 0; }
+
+                        that.toolsEl.style.right = x + 'px';
+                        that.toolsEl.style.bottom = y + 'px';
+                        that.pos.endX = x;
+                        that.pos.endY = y;
+                        e.preventDefault();
+                    }
+                });
+            },
+            getLocalPos: function () {
+                var that = this;
+                var posX = localStorage.getItem('birdTools_X') * 1,
+                    posY = localStorage.getItem('birdTools_Y') * 1;
+                if (posX || posY) {
+                    that.pos.x = posX;
+                    that.pos.y = posY;
+                    that.toolsEl.style.right = that.pos.x + 'px';
+                    that.toolsEl.style.bottom = that.pos.y + 'px';
+                }
+            }
+
+        }
+
+        $birdTools.init();
+    }())
+
 </script>

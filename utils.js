@@ -142,14 +142,14 @@ exports.dummyHelpers = {
 };
 
 exports.handleUrl = function (url) {
-    var protocal = 'http';
+    var protocol = 'http:';
     var host = url.replace(/\w+:\/\//, function(rs,$1,$2,offset,source) {
-        protocal = rs.replace('://', '');
+        protocol = rs.replace('//', '');
         return '';
     });
 
     return {
-        protocal: protocal,
+        protocol: protocol,
         host: host,
     }
 };

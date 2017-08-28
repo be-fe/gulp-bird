@@ -1,4 +1,5 @@
 var http = require("http");
+var https = require("https");
 var path = require("path");
 var utils = require("./utils.js");
 var parseCookie = utils.parseCookie;
@@ -27,8 +28,9 @@ module.exports = function () {
             options = {
                 host: utils.handleUrl(transCurrent.targetServer.host).host,
                 port: transCurrent.targetServer.port || 80,
-                protocal: transCurrent.targetServer.protocal || utils.handleUrl(transCurrent.targetServer.host).protocal || 'http',
+                protocol: transCurrent.targetServer.protocol || utils.handleUrl(transCurrent.targetServer.host).protocol || 'http:',
             };
+
             options.headers = req.headers;
             options.path = req.url;
             options.method = req.method;
@@ -80,7 +82,7 @@ module.exports = function () {
             if (req.url.match(i)) {
                 options.headers = req.headers;
                 options.method = req.method;
-                options.protocal = utils.handleUrl(transCurrent.regExpPath[i].host).protocal || transCurrent.targetServer.protocal || 'http';
+                options.protocol = utils.handleUrl(transCurrent.regExpPath[i].host).protocol || transCurrent.targetServer.protocol || 'http:';
                 options.host = utils.handleUrl(transCurrent.regExpPath[i].host).host || utils.handleUrl(transCurrent.targetServer.host).host;
                 options.port = transCurrent.regExpPath[i].port || options.port;
                 options.path = req.url.replace(i, transCurrent.regExpPath[i].path);
@@ -101,8 +103,13 @@ module.exports = function () {
             return;
         }
 
-        console.log("transpond \033[31m%s\033[m to \033[35m%s\033[m", req.headers.host + req.url, options.host + ":" + options.port + options.path);
-        var serverReq = http.request(options, function (serverRes) {
+        console.log("transpond \033[31m%s\033[m to \033[35m%s\033[m", req.headers.host + req.url, options.protocol + '//' + options.host + ":" + options.port + options.path);
+
+        /*
+         * 发送转发请求
+         */
+        var reqStarter = options.protocol === 'https:' ? https : http;
+        var serverReq = reqStarter.request(options, function (serverRes) {
             //console.log(req.url + " " + serverRes.statusCode);
             res.writeHead(serverRes.statusCode, serverRes.headers);
             serverRes.on('data', function (chunk) {

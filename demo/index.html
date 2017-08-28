@@ -10,12 +10,20 @@
       <meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no">
     <meta name="format-detection" content="telephone=no,email=no,adress=no">
     <link rel="stylesheet" type="text/css" href="./index.css">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
 <body>
     <div>Hello World! </div>
+    <button onclick="getTieba()">获取贴吧数据</button>
     <script src="./index.js"></script>
     <script>
+        function getTieba (){
+            $.get('/hottopic/browse/topicList?red_tag=t2585805953', function(data) {
+                console.log(data);
+            })
+        }
+
         // (function flexible(window, document) {
         //     var docEl = document.documentElement
         //     var dpr = window.devicePixelRatio || 1;

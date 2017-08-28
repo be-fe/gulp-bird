@@ -25,8 +25,9 @@ module.exports = function () {
 
         if (transCurrent.targetServer) {
             options = {
-                host: transCurrent.targetServer.host,
-                port: transCurrent.targetServer.port || 80
+                host: utils.handleUrl(transCurrent.targetServer.host).host,
+                port: transCurrent.targetServer.port || 80,
+                protocal: transCurrent.targetServer.protocal || utils.handleUrl(transCurrent.targetServer.host).protocal || 'http',
             };
             options.headers = req.headers;
             options.path = req.url;
@@ -78,9 +79,9 @@ module.exports = function () {
         for (i in transCurrent.regExpPath) {
             if (req.url.match(i)) {
                 options.headers = req.headers;
-                // options.path = req.url;
                 options.method = req.method;
-                options.host = transCurrent.regExpPath[i].host || options.host;
+                options.protocal = utils.handleUrl(transCurrent.regExpPath[i].host).protocal || transCurrent.targetServer.protocal || 'http';
+                options.host = utils.handleUrl(transCurrent.regExpPath[i].host).host || utils.handleUrl(transCurrent.targetServer.host).host;
                 options.port = transCurrent.regExpPath[i].port || options.port;
                 options.path = req.url.replace(i, transCurrent.regExpPath[i].path);
 

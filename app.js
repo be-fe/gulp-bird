@@ -36,7 +36,7 @@ var transRules = {
 
 var toolsConf = {
     weinre: {
-        open: true,
+        open: false,
         port: 9000
     },
     showTools: true

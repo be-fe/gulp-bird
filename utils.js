@@ -141,4 +141,17 @@ exports.dummyHelpers = {
     }
 };
 
+exports.handleUrl = function (url) {
+    var protocal = 'http';
+    var host = url.replace(/\w+:\/\//, function(rs,$1,$2,offset,source) {
+        protocal = rs.replace('://', '');
+        return '';
+    });
+
+    return {
+        protocal: protocal,
+        host: host,
+    }
+};
+
 

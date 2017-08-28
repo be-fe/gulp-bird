@@ -88,9 +88,11 @@ targetServer
 
     var toolsConf = {
         weinre: {
-            open: true,
+            open: true, //和移动调试工具条中的vconsole冲突, 当为true时vconsole自动关闭
             port: 9001
-        }
+        },
+
+        showTools: true //移动端调试工具条，PC端开发可关闭
     };
 
     bird.start(server, transpondRules, toolsConf);

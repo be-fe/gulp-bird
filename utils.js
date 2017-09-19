@@ -24,7 +24,9 @@ exports.parseCookie = function (cookieStr) {
     var tmpArr = cookieStr.split('; ');
     var obj = {};
     tmpArr.forEach(function(item, index) {
-        obj[item.match(/^[^=]*(?==)/)[0]] = item.match(/=(\S*)/)[1]
+        if (item.match(/^[^=]*(?==)/)) {
+            obj[item.match(/^[^=]*(?==)/)[0]] = item.match(/=(\S*)/)[1]
+        }
     });
     return obj;
 };

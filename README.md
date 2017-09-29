@@ -35,8 +35,8 @@ targetServer
 在targetServer中配置身份校验信息，则可以帮助我们联调一些需要身份验证的接口
 
 ```js
-    "headers": {
-         "cookie": "xplatform_ge=4ffcc236a075c3e1f5068f172f654bbe9a1f23adc1563138c432b72b0d06261a153cc6f5a40"
+    "headers": {
+         "cookie": "xplatform_ge=4ffcc236a075c3e1f5068f172f654bbe9a1f23adc1563138c432b72b0d06261a153cc6f5a40"
     }
 ```
 
@@ -65,14 +65,15 @@ targetServer
     var transpondRules = {
         "8008": {
             //目标服务器的ip和端口，域名也可，但注意不要被host了
-           targetServer: {
+           targetServer: {
                 "port": "8274",
-                "host": "cp01-hiserver-sandbox1-tc.cp01.baidu.com",
+                "host": "cp01-hiserver-sandbox1-tc.cp01.baidu.com",
+                "changeOrigin": false, // Default: false - changes the origin of the host header to the target URL
                 "replaceHeaders": true, //当为true时，如果cookie or header中有相同key，则替换
-                "headers": {
-                    "cookie": "xplatform_ge=4ffcc236a075c3e1f5068f172f654bbe9a1f23adc1563138c432b72b0d06261a153cc6f5a40"
+                "headers": {
+                    "cookie": "xplatform_ge=4ffcc236a075c3e1f5068f172f654bbe9a1f23adc1563138c432b72b0d06261a153cc6f5a40"
                 }
-            },
+            },
             //特殊请求转发，可选配置，内部的host、port和attachHeaders为可选参数
             regExpPath: {
                 "/hrlms/rs": {
@@ -80,6 +81,7 @@ targetServer
                     //"port": "8045",
                     //"attachHeaders": {"app-id": 5},
                     "path": "/hrlms/rs"
+                    changeOrigin: false //default false
                 }
             }
         },

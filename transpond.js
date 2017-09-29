@@ -76,6 +76,11 @@ module.exports = function () {
             }
         }
 
+        // 转发changeOrigin开关
+        if (transCurrent.targetServer.host){
+            options.headers.host = transCurrent.targetServer.host;
+        }
+
         //匹配regExpPath做特殊转发
         var i;
         for (i in transCurrent.regExpPath) {
@@ -86,6 +91,11 @@ module.exports = function () {
                 options.host = utils.handleUrl(transCurrent.regExpPath[i].host).host || utils.handleUrl(transCurrent.targetServer.host).host;
                 options.port = transCurrent.regExpPath[i].port || options.port;
                 options.path = req.url.replace(i, transCurrent.regExpPath[i].path);
+
+                // 特殊转发changeOrigin开关
+                if (transCurrent.regExpPath[i].changeOrigin) {
+                    options.headers.host = transCurrent.regExpPath[i].host;
+                }
 
                 if (transCurrent.regExpPath[i].attachHeaders) {
                     var j;
